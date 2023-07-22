@@ -72,3 +72,10 @@ int	main(int argc, char **argv)
 /*
 gcc -Wall -Werror -Wextra -I ./incl ./test/t_stringyargs.c ./srcs/input_stringify.c ./srcs/builtin_env.c ./srcs/builtin_export.c ./srcs/builtin_caller.c ./srcs/cleaner.c ./srcs/env_parser.c ./srcs/env_utils.c ./srcs/exec_finder.c ./srcs/input_parser_gets.c ./srcs/input_parser.c ./srcs/input_utils.c  ./libs/libft/libft.a -o strin
 */
+
+
+
+/*
+export 'pog="mi'igo"lalalabog'imm"igoooo'heh'                                                   bog=lololo"hey mal'ucao"pogz
+
+*/

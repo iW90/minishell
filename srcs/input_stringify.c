@@ -6,124 +6,128 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 16:18:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/17 19:24:48 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/22 00:25:32 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	quote_closes(char *str)
+static char	*expand_variable(char *src)
 {
-	char	quote;
-	int		paired_quotes;
-
-	if (*str != '\'' && *str != '"')
-		return (0);
-	quote = *str++;
-	paired_quotes = 0;
-	while (*str)
-		if (*str++ == quote)
-			paired_quotes = !paired_quotes;
-	return (paired_quotes);
-}
-
-static int	count_args(char *args, int single_arg)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (args[i])
-	{
-		if (is_quote(args[i] && quote_closes(&args[i])))
-			get_quote(args, &i);
-		while (ft_isblank(args[i + 1]))
-			args++;
-		if (ft_isblank(args[i]) || !args[i + 1])
-		{
-			if (single_arg && args[i + 1])
-				return (i + 1);
-			else if (single_arg)
-				return (i);
-			else
-				count++;
-		}
-		i++;
-	}
-	return (count);
-}
-
-static char	*strlcpy_quoted(char *args, int len)
-{
+	t_ctrl	*ctrl;
+	t_env	*var;
 	char	*str;
-	int		i;
-	int		has_quote;
+	int		len;
 
-	i = -1;
-	has_quote = 0;
-	while (++i < len -1 && !has_quote)
-		if (is_quote(args[i]) && quote_closes(&args[i]))
-			has_quote = (int)args[i];
-	if (has_quote)
-		len -= 2;
+	ctrl = get_control();
+	var = search_var(src, ctrl->env);
+	len = ft_strlen(var->value) + 1;
 	str = malloc(sizeof(char) * len);
 	if (!str)
 		return (NULL);
-	i = 0;
-	while (i < len - 1)
+	ft_strlcpy(str, var->value, len);
+	return (str);
+}
+
+static char	*copy_argument(char *arg, int len, int i)
+{
+	char	*str;
+	int		copychars;
+
+	len = size_minus_quotes(arg, len);
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	while (i < len)
 	{
-		if (*args != (char)has_quote)
-			str[i++] = *args;
-		args++;
+		copychars = 0;
+		if (is_quote(*arg))
+			copychars += goto_next_quote(arg);
+		if (copychars)
+		{
+			ft_memcpy(&str[i], arg + 1, copychars - 1);
+			arg += copychars + 1;
+			i += copychars - 1;
+		}
+		else
+			str[i++] = *arg++;
 	}
 	str[i] = '\0';
 	return (str);
 }
 
-static char	*set_arg(char *args, char **pointer)
+char	*get_next_arg(char *args, char **pointers, int done)
 {
+	static int	current;
 	char		*str;
-	int			len;
 	int			start;
-	static int	new_arg;
 
-	start = new_arg;
-	len = count_args(&args[start], 1);
-	new_arg += len + 1;
-	while (ft_isblank(args[new_arg]))
-		new_arg++;
-	if (!args[new_arg])
+	while (ft_isblank(args[current]))
+		current++;
+	start = current;
+	while (args[current] && !ft_isblank(args[current]))
 	{
-		len++;
-		new_arg = 0;
+		if (is_quote(args[current]))
+			current += goto_next_quote(&args[current]) + 1;
+		else
+			current++;
 	}
-	str = strlcpy_quoted(&args[start], len + 1);
+	str = copy_argument(&args[start], current - start, 0);
 	if (!str)
 	{
-		clear_ptr_array(pointer);
+		clear_ptr_array(pointers);
 		exit_program(OUT_OF_MEMORY);
 	}
+	if (done)
+		current = 0;
 	return (str);
+}
+
+void	expand_quoted_vars(char **args)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (args[i])
+	{
+		if (args[i][0] == '$' && is_a_quoted_var(&args[i][1]))
+		{
+			temp = expand_variable(&args[i][1]);
+			if (!temp)
+			{
+				clear_ptr_array(args);
+				exit_program(OUT_OF_MEMORY);
+			}
+			free(args[i]);
+			args[i] = temp;
+		}
+		i++;
+	}
 }
 
 char	**stringify_args(char *args)
 {
-	int		i;
-	int		count;
 	char	**pointers;
+	int		size;
+	int		i;
 
+	pointers = NULL;
 	if (!args)
 		return (NULL);
-	i = 0;
-	count = count_args(args, 0);
-	pointers = malloc(sizeof(char *) * (count + 1));
+	size = count_args(args);
+	pointers = malloc(sizeof(char *) * (size + 1));
 	if (!pointers)
 		exit_program(OUT_OF_MEMORY);
-	while (i <= count)
+	i = 0;
+	while (i <= size)
 		pointers[i++] = NULL;
 	i = 0;
-	while (i < count)
-		pointers[i++] = set_arg(args, pointers);
+	while (i < size)
+	{
+		pointers[i] = get_next_arg(args, pointers, i == size - 1);
+		i++;
+	}
+	expand_quoted_vars(pointers);
 	return (pointers);
 }

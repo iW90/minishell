@@ -6,11 +6,18 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 10:14:08 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/17 21:15:27 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/21 22:58:09 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	copy_key_or_value(t_env *var, char *dst, char *src)
+{
+	if (!ft_strncmp(var->key, src, ft_strlen(src)))
+		*dst++ = '$';
+	ft_memcpy(dst, src, ft_strlen(src));
+}
 
 /*
 **	This function receives the variable name and it's intended 
@@ -34,11 +41,13 @@ static int	assess_len(char *str, int len, char **copy)
 	str[len] = '\0';
 	variable = search_var(str, control->env);
 	if (variable)
-		src = variable->value;
+		src = var_has_quote(variable);
 	str[len] = temp;
 	if (copy && src)
-		ft_memcpy(*copy, src, ft_strlen(src));
-	if (src)
+		copy_key_or_value(variable, *copy, src);
+	if (src && !ft_strncmp(variable->key, src, ft_strlen(src)))
+		return (ft_strlen(src) + 1);
+	else if (src)
 		return (ft_strlen(src));
 	return (0);
 }
@@ -69,16 +78,6 @@ static int	expand_var(char *line, int *i, char **copy)
 }
 
 /*
-**	Bash variable names can only have alpha numeric 
-**	characters or an underscore "_" but there is a 
-**	special variable "$?" that must be treated
-*/
-static int	valid_var_name(char c)
-{
-	return (c == '?' || ft_isalnum(c) || c == '_');
-}
-
-/*
 **	Once the length has been assessed, this function will
 **	then copy the variable (if it exists), so it can provide
 **	an expanded version of the captured readline
@@ -98,6 +97,8 @@ char	*copy_expansion(char *line, int len)
 	cursor = expanded;
 	while (line[i])
 	{
+		if (line[i] == '$' && line[i + 1] == '\'')
+			i++;
 		if (line[i] == '\'' && quote_closes(&line[i]))
 			quoted = !quoted;
 		if (!quoted && line[i] == '$' && valid_var_name(line[i + 1]))
@@ -124,6 +125,8 @@ char	*expand_line(char *line)
 	total_len = 0;
 	while (line[i])
 	{
+		if (line[i] == '$' && line[i + 1] == '\'')
+			i++;
 		if (line[i] == '\'' && quote_closes(&line[i]))
 			total_len += get_quote(line, &i);
 		if (line[i] == '$' && valid_var_name(line[i + 1]))
