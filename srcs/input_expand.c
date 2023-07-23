@@ -6,18 +6,11 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 10:14:08 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/21 22:58:09 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 11:57:16 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	copy_key_or_value(t_env *var, char *dst, char *src)
-{
-	if (!ft_strncmp(var->key, src, ft_strlen(src)))
-		*dst++ = '$';
-	ft_memcpy(dst, src, ft_strlen(src));
-}
 
 /*
 **	This function receives the variable name and it's intended 
@@ -29,7 +22,7 @@ static void	copy_key_or_value(t_env *var, char *dst, char *src)
 static int	assess_len(char *str, int len, char **copy)
 {
 	t_ctrl	*control;
-	t_env	*variable;
+	t_env	*var;
 	char	*src;
 	char	temp;
 
@@ -39,13 +32,14 @@ static int	assess_len(char *str, int len, char **copy)
 	control = get_control();
 	temp = str[len];
 	str[len] = '\0';
-	variable = search_var(str, control->env);
-	if (variable)
-		src = var_has_quote(variable);
+	var = search_var(str, control->env);
+	if (var)
+		src = var_has_quote(var);
 	str[len] = temp;
 	if (copy && src)
-		copy_key_or_value(variable, *copy, src);
-	if (src && !ft_strncmp(variable->key, src, ft_strlen(src)))
+		copy_key_or_value(var, *copy, src);
+	if (src && ft_strncmp(var->key, var->value, ft_strlen(var->value)) \
+		&& !ft_strncmp(var->key, src, ft_strlen(src)))
 		return (ft_strlen(src) + 1);
 	else if (src)
 		return (ft_strlen(src));
@@ -77,6 +71,19 @@ static int	expand_var(char *line, int *i, char **copy)
 	return (len);
 }
 
+static int	copy_between_quotes(char *line, int *i, char **dst)
+{
+	(*i)++;
+	while (line[*i] != '\'')
+	{
+		**dst = line[*i];
+		*dst += 1;
+		(*i)++;
+	}
+	(*i)++;
+	return (1);
+}
+
 /*
 **	Once the length has been assessed, this function will
 **	then copy the variable (if it exists), so it can provide
@@ -90,17 +97,17 @@ char	*copy_expansion(char *line, int len)
 	char	*cursor;
 
 	i = 0;
-	quoted = 0;
 	expanded = malloc(sizeof(char) * len);
 	if (!expanded)
 		exit_program(OUT_OF_MEMORY);
 	cursor = expanded;
 	while (line[i])
 	{
+		quoted = 0;
 		if (line[i] == '$' && line[i + 1] == '\'')
 			i++;
 		if (line[i] == '\'' && quote_closes(&line[i]))
-			quoted = !quoted;
+			quoted = copy_between_quotes(line, &i, &cursor);
 		if (!quoted && line[i] == '$' && valid_var_name(line[i + 1]))
 			cursor += expand_var(line, &i, &cursor);
 		else if (line[i])
@@ -128,7 +135,7 @@ char	*expand_line(char *line)
 		if (line[i] == '$' && line[i + 1] == '\'')
 			i++;
 		if (line[i] == '\'' && quote_closes(&line[i]))
-			total_len += get_quote(line, &i);
+			total_len += get_quote(line, &i) - 1;
 		if (line[i] == '$' && valid_var_name(line[i + 1]))
 			total_len += expand_var(line, &i, NULL);
 		else if (line[i])

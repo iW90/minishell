@@ -16,7 +16,7 @@
 - [x] Not interpret unclosed quotes or special characters which are not required by the subject such as `\` (backslash) or `;` (semicolon).
 - [x] Handle `'` (single quote) which should prevent the shell from interpreting the meta-characters in the quoted sequence.
 - [x] Handle `"` (double quote) which should prevent the shell from interpreting the meta-characters in the quoted sequence except for `$` (dollar sign)
-- [x] **[Needs bugfix]** Handle environment variables ($ followed by a sequence of characters) which should expand to their values.
+- [x] Handle environment variables ($ followed by a sequence of characters) which should expand to their values.
 - [x] In interactive mode:
 	- [x] <kbd>Ctrl</kbd>+<kbd>C</kbd> displays a new prompt on a new line.
 	- [x] <kbd>Ctrl</kbd>+<kbd>D</kbd> exits the shell.

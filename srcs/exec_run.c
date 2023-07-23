@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_run.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 11:07:41 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/18 18:31:41 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/23 10:18:36 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_args(char **args)
+static int	count_args_array(char **args)
 {
 	int	count;
 
@@ -30,7 +30,7 @@ char	**wrap_args(char *exec, char **args)
 
 	i = 1;
 	if (args)
-		len = count_args(args);
+		len = count_args_array(args);
 	else
 		len = 0;
 	wrapped = malloc(sizeof(char *) * (len + 2));

@@ -77,5 +77,5 @@ gcc -Wall -Werror -Wextra -I ./incl ./test/t_stringyargs.c ./srcs/input_stringif
 
 /*
 export 'pog="mi'igo"lalalabog'imm"igoooo'heh'                                                   bog=lololo"hey mal'ucao"pogz
-
+$'PATH' $"PATH" $PATH "$PATH"
 */

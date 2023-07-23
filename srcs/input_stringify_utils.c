@@ -6,11 +6,19 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 00:22:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/22 00:24:47 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 11:57:57 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	copy_key_or_value(t_env *var, char *dst, char *src)
+{
+	if (!ft_strncmp(var->key, src, ft_strlen(src)) && \
+		ft_strncmp(var->key, var->value, ft_strlen(var->value))) 
+		*dst++ = '$';
+	ft_memcpy(dst, src, ft_strlen(src));
+}
 
 int	count_args(char *args)
 {

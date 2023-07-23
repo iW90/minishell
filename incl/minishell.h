@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/22 00:27:04 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 11:57:59 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_ctrl
 char	**stringify_envp(t_env *list);
 char	**stringify_args(char *args);
 int		count_list(t_env *list);
-
+void	copy_key_or_value(t_env *var, char *dst, char *src);
 /* PARSE ENV FUNCTIONS */
 // Main
 t_env	*parse_env(char **env);
