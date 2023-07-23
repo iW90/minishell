@@ -6,18 +6,18 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 16:18:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 17:42:42 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 19:53:32 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*copy_argument(char *arg, int len, int i)
+char	*copy_argument(char *arg, int len, int i, int first)
 {
 	char	*str;
 	int		copychars;
 
-	if (has_expanded_var(arg, len))
+	if (first && has_expanded_var(arg, len))
 		return (copy_with_expanse(arg, len));
 	len = size_minus_quotes(arg, len);
 	str = malloc(sizeof(char) * (len + 1));
@@ -57,7 +57,7 @@ char	*get_next_arg(char *args, char **pointers, int done)
 		else
 			current++;
 	}
-	str = copy_argument(&args[start], current - start, 0);
+	str = copy_argument(&args[start], current - start, 0, 1);
 	if (!str)
 	{
 		clear_ptr_array(pointers);

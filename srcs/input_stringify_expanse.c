@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 14:57:00 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 19:25:18 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 19:53:40 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static t_env	*locate_var(char *str)
 	t_ctrl	*ctrl;
 
 	i = 0;
-
 	ctrl = get_control();
 	while (str[i] && valid_var_name(str[i]))
 		i++;
@@ -76,7 +75,7 @@ static void	copy_everything(char *src, char *dst, int size)
 	t_env	*var;
 
 	i = 0;
-	while (i < size)
+	while (i < size && src[i])
 	{
 		if (src[i] == '\'' && quote_closes(&src[i]))
 		{
@@ -95,6 +94,7 @@ static void	copy_everything(char *src, char *dst, int size)
 		else
 			*dst++ = src[i++];
 	}
+	*dst = '\0';
 }
 
 char	*copy_with_expanse(char *arg, int len)
@@ -111,10 +111,9 @@ char	*copy_with_expanse(char *arg, int len)
 	copied = malloc(sizeof(char) * (size + 1));
 	if (!copied)
 		return (NULL);
-	copied[size] = '\0';
 	copy_everything(arg, copied, size);
 	arg[len] = temp;
-	new = copy_argument(copied, size, 0);
+	new = copy_argument(copied, size, 0, 0);
 	free(copied);
 	return (new);
 }
