@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 10:14:08 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 11:57:16 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 16:11:42 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ static int	expand_var(char *line, int *i, char **copy)
 
 static int	copy_between_quotes(char *line, int *i, char **dst)
 {
+	**dst = line[*i];
+	*dst += 1;
 	(*i)++;
 	while (line[*i] != '\'')
 	{
@@ -80,6 +82,8 @@ static int	copy_between_quotes(char *line, int *i, char **dst)
 		*dst += 1;
 		(*i)++;
 	}
+	**dst = line[*i];
+	*dst += 1;
 	(*i)++;
 	return (1);
 }
