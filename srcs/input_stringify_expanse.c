@@ -6,29 +6,12 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 14:57:00 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 20:08:04 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 20:11:13 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/*
-static char	*expand_variable(char *src)
-{
-	t_ctrl	*ctrl;
-	t_env	*var;
-	char	*str;
-	int		len;
 
-	ctrl = get_control();
-	var = search_var(src, ctrl->env);
-	len = ft_strlen(var->value) + 1;
-	str = malloc(sizeof(char) * len);
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, var->value, len);
-	return (str);
-}
-*/
 static t_env	*locate_var(char *str)
 {
 	int		i;
