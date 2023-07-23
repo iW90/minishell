@@ -6,13 +6,13 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 16:18:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 15:25:02 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 17:42:42 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*copy_argument(char *arg, int len, int i)
+char	*copy_argument(char *arg, int len, int i)
 {
 	char	*str;
 	int		copychars;

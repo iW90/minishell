@@ -6,7 +6,7 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/07/22 00:23:12 by maalexan         ###   ########.fr        #
+#    Updated: 2023/07/23 17:44:01 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ FUN			:=	main.c \
 				input_parser.c \
 				input_utils.c \
 				input_stringify.c \
+				input_stringify_expanse.c \
 				input_stringify_utils.c \
 				input_validator.c \
 				input_expand.c \

@@ -6,12 +6,12 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 14:57:00 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 15:40:58 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 18:06:29 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 static char	*expand_variable(char *src)
 {
 	t_ctrl	*ctrl;
@@ -28,7 +28,7 @@ static char	*expand_variable(char *src)
 	ft_strlcpy(str, var->value, len);
 	return (str);
 }
-
+*/
 static t_env	*locate_var(char *str)
 {
 	int		i;
@@ -37,6 +37,7 @@ static t_env	*locate_var(char *str)
 	t_ctrl	*ctrl;
 
 	i = 0;
+
 	ctrl = get_control();
 	while (str[i] && !ft_isblank(str[i]))
 		i++;
@@ -55,42 +56,65 @@ static int	expanded_vars_length(char *arg)
 	len = 0;
 	while (*arg)
 	{
-		if (*arg == '\'')
+		if (*arg == '\'' && quote_closes(arg))
 			arg += goto_next_quote(arg) + 1;
-		if (*arg == '$' && is_a_quoted_var(*(arg + 1)))
+		if (*arg == '$' && is_a_quoted_var(arg + 1))
 		{
-			var = locate_var(arg);
+			var = locate_var(arg + 1);
 			len += (int)ft_strlen(var->value);
-            len -= (int)ft_strlen(var->key);
-            len--;
+			len -= (int)ft_strlen(var->key);
+			len--;
 		}
 		arg++;
 	}
 	return (len);
 }
 
-char	*copy_with_expanse(char *arg, int len)
+static void	copy_everything(char *src, char *dst, int size)
 {
 	int		i;
-	int		size;
-	char	temp;
-    char    *copied;
+	t_env	*var;
 
 	i = 0;
-	temp = arg[len];
-    arg[len] = '\0';
-    size = (int)ft_strlen(arg);
-	size += count_expanded_vars(arg);
-    copied = malloc(sizeof(char) * (size + 1));
-    if (!copied)
-		return (NULL);
-    copied[size] = '\0';
-    while (i < size)
-    {
-        if (arg[i] == '\'' && quote_closes(arg[i]))
-            copy_everything()
-                
-    }
-    arg[len] = temp;
+	while (i < size)
+	{
+		if (src[i] == '\'' && quote_closes(&src[i]))
+		{
+			*dst++ = src[i++];
+			while (src[i] != '\'')
+				*dst++ = src[i++];
+			*dst++ = src[i++];
+		}
+		if (src[i] == '$' && is_a_quoted_var(&src[i + 1]))
+		{
+			var = locate_var(&src[i + 1]);
+			ft_memcpy(dst, var->value, ft_strlen(var->value));
+			i += (int)ft_strlen(var->key) + 1;
+			dst += (int)ft_strlen(var->value);
+		}
+		else
+			*dst++ = src[i++];
+	}
+}
 
+char	*copy_with_expanse(char *arg, int len)
+{
+	int		size;
+	char	temp;
+	char	*copied;
+	char	*new;
+
+	temp = arg[len];
+	arg[len] = '\0';
+	size = (int)ft_strlen(arg);
+	size += expanded_vars_length(arg);
+	copied = malloc(sizeof(char) * (size + 1));
+	if (!copied)
+		return (NULL);
+	copied[size] = '\0';
+	copy_everything(arg, copied, size);
+	arg[len] = temp;
+	new = copy_argument(copied, size, 0);
+	free(copied);
+	return (new);
 }
