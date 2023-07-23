@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 00:22:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 11:57:57 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 15:24:30 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,20 @@ int	size_minus_quotes(char *arg, int len)
 		i++;
 	}
 	return (len);
+}
+
+int	has_expanded_var(char *arg, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (arg[i] == '\'')
+			i += goto_next_quote(arg);
+		if (arg[i] == '$' && is_a_quoted_var(arg + 1))
+			return (1);
+		i++;
+	}
+	return (0);
 }

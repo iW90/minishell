@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 21:13:56 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/22 00:21:17 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 14:21:59 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,17 @@ int	is_a_quoted_var(char *str)
 	t_ctrl	*ctrl;
 	t_env	*var;
 	char	*cursor;
+	int		i;
+	char	temp;
 
+	i = 0;
 	ctrl = get_control();
+	while (str[i] && !ft_isblank(str[i]))
+		i++;
+	temp = str[i];
+	str[i] = '\0';
 	var = search_var(str, ctrl->env);
+	str[i] = temp;
 	if (!var)
 		return (0);
 	cursor = var->value;

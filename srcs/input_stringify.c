@@ -6,34 +6,19 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 16:18:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 11:58:54 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 15:25:02 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*expand_variable(char *src)
-{
-	t_ctrl	*ctrl;
-	t_env	*var;
-	char	*str;
-	int		len;
-
-	ctrl = get_control();
-	var = search_var(src, ctrl->env);
-	len = ft_strlen(var->value) + 1;
-	str = malloc(sizeof(char) * len);
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, var->value, len);
-	return (str);
-}
 
 static char	*copy_argument(char *arg, int len, int i)
 {
 	char	*str;
 	int		copychars;
 
+	if (has_expanded_var(arg, len))
+		return (copy_with_expanse(arg, len));
 	len = size_minus_quotes(arg, len);
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
@@ -83,29 +68,6 @@ char	*get_next_arg(char *args, char **pointers, int done)
 	return (str);
 }
 
-void	expand_quoted_vars(char **args)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	while (args[i])
-	{
-		if (args[i][0] == '$' && is_a_quoted_var(&args[i][1]))
-		{
-			temp = expand_variable(&args[i][1]);
-			if (!temp)
-			{
-				clear_ptr_array(args);
-				exit_program(OUT_OF_MEMORY);
-			}
-			free(args[i]);
-			args[i] = temp;
-		}
-		i++;
-	}
-}
-
 char	**stringify_args(char *args)
 {
 	char	**pointers;
@@ -128,6 +90,5 @@ char	**stringify_args(char *args)
 		pointers[i] = get_next_arg(args, pointers, i == size - 1);
 		i++;
 	}
-	expand_quoted_vars(pointers);
 	return (pointers);
 }
