@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 19:53:13 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 20:07:46 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**stringify_envp(t_env *list);
 char	**stringify_args(char *args);
 int		count_list(t_env *list);
 void	copy_key_or_value(t_env *var, char *dst, char *src);
-char	*copy_argument(char *arg, int len, int i, int first);
+char	*copy_argument(char *arg, int len, int i);
 char	*copy_with_expanse(char *arg, int len);
 /* PARSE ENV FUNCTIONS */
 // Main

@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 14:57:00 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 19:53:40 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 20:08:04 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char	*copy_with_expanse(char *arg, int len)
 		return (NULL);
 	copy_everything(arg, copied, size);
 	arg[len] = temp;
-	new = copy_argument(copied, size, 0, 0);
+	new = copy_argument(copied, size, 0);
 	free(copied);
 	return (new);
 }
