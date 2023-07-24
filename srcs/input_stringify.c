@@ -6,23 +6,24 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 16:18:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 20:07:52 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/23 19:53:32 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*copy_argument(char *arg, int len, int i)
+char	*copy_argument(char *arg, int len, int i, int first)
 {
 	char	*str;
 	int		copychars;
 
-	if (i && has_expanded_var(arg, len))
+	if (first && has_expanded_var(arg, len))
 		return (copy_with_expanse(arg, len));
 	len = size_minus_quotes(arg, len);
 	str = malloc(sizeof(char) * (len + 1));
-	i = 0;
-	while (i < len && str)
+	if (!str)
+		return (NULL);
+	while (i < len)
 	{
 		copychars = 0;
 		if (is_quote(*arg))
@@ -35,8 +36,8 @@ char	*copy_argument(char *arg, int len, int i)
 		}
 		else
 			str[i++] = *arg++;
-		str[i] = '\0';
 	}
+	str[i] = '\0';
 	return (str);
 }
 
@@ -56,7 +57,7 @@ char	*get_next_arg(char *args, char **pointers, int done)
 		else
 			current++;
 	}
-	str = copy_argument(&args[start], current - start, 1);
+	str = copy_argument(&args[start], current - start, 0, 1);
 	if (!str)
 	{
 		clear_ptr_array(pointers);
