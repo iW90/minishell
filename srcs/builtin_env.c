@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 20:25:59 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/18 14:50:35 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/28 18:23:01 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@ static void	print_env(char *key, char *value)
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
-int	b_env(char **path, t_env *list)
+static void	print_export(char *key, char *value)
+{
+	ft_putstr_fd("declare -x ", STDOUT_FILENO);
+	ft_putstr_fd(key, STDOUT_FILENO);
+	ft_putstr_fd("=\"", STDOUT_FILENO);
+	ft_putstr_fd(value, STDOUT_FILENO);
+	ft_putstr_fd("\"\n", STDOUT_FILENO);
+}
+
+int	b_env(char **path, t_env *list, int exp)
 {
 	t_env	*head;
 
@@ -30,9 +39,13 @@ int	b_env(char **path, t_env *list)
 	list = list->next;
 	while (list)
 	{
-		print_env(list->key, list->value);
+		if (!exp)
+			print_env(list->key, list->value);
+		else
+			print_export(list->key, list->value);
 		list = list->next;
 	}
-	print_env(head->key, head->value);
+	if (!exp)
+		print_env(head->key, head->value);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 11:57:59 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:48:35 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	call_builtin(char *builtin, char **args, t_env *env);
 /* Commands */
 int		b_cd(char **path, t_env *env);
 int		b_echo(char **args);
-int		b_env(char **path, t_env *list);
+int		b_env(char **path, t_env *list, int exp);
 int		b_exit(char **args);
 int		b_export(t_env *env, char **args);
 int		b_pwd(void);

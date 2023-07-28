@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:34:20 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/18 18:30:54 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:55:01 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	call_builtin(char *builtin, char **args, t_env *env)
 	else if (!ft_strncmp(builtin, "export", 7))
 		ctrl->last_exit = b_export(env, args);
 	else if (!ft_strncmp(builtin, "env", 4))
-		ctrl->last_exit = b_env(args, env);
+		ctrl->last_exit = b_env(args, env, 0);
 	else if (!ft_strncmp(builtin, "exit", 5))
 		b_exit(args);
 }

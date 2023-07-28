@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 21:02:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/17 22:51:50 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:56:33 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	validate_var(char *arg)
 int	b_export(t_env *env, char **args)
 {
 	if (!args)
-		return (0);
+		return (b_env(NULL, env, 1));
 	while (*args)
 	{
 		if (validate_var(*args))
