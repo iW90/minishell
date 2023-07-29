@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/23 19:53:13 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:20:07 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ int		b_pwd(void);
 int		b_unset(t_env *env, char **args);
 
 void	new_var(t_env *env, char *args);
+int		export_without_args(t_env *env);
+void	ft_quick_sort(char **strings, int low, int high);
 
 /* EXECS */
 /* Main */

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/07/23 17:44:01 by maalexan         ###   ########.fr        #
+#    Updated: 2023/07/29 11:18:17 by inwagner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ FUN			:=	main.c \
 				builtin_export.c \
 				builtin_pwd.c \
 				builtin_unset.c \
+				builtin_utils.c \
 				cleaner.c \
 				env_parser.c \
 				env_shifter.c \
@@ -51,9 +52,9 @@ FUN			:=	main.c \
 				input_validator.c \
 				input_expand.c \
 				input_expand_utils.c \
+				quick_sort.c \
 				signal_handler.c \
 				special_var.c 
-
 
 # Object files
 OBJ			:=	$(FUN:%.c=$(OBJ_DIR)/%.o)

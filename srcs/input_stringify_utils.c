@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_stringify_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 00:22:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/23 19:46:52 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:18:52 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	copy_key_or_value(t_env *var, char *dst, char *src)
 {
 	if (!ft_strncmp(var->key, src, ft_strlen(src)) && \
-		ft_strncmp(var->key, var->value, ft_strlen(var->value))) 
+		ft_strncmp(var->key, var->value, ft_strlen(var->value)))
 		*dst++ = '$';
 	ft_memcpy(dst, src, ft_strlen(src));
 }
