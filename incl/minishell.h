@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/28 17:48:35 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/28 22:48:50 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,15 @@ void	call_builtin(char *builtin, char **args, t_env *env);
 /* Commands */
 int		b_cd(char **path, t_env *env);
 int		b_echo(char **args);
-int		b_env(char **path, t_env *list, int exp);
+int		b_env(char **path, t_env *list);
 int		b_exit(char **args);
 int		b_export(t_env *env, char **args);
 int		b_pwd(void);
 int		b_unset(t_env *env, char **args);
 
 void	new_var(t_env *env, char *args);
+int		export_without_args(t_env *env);
+void	ft_quick_sort(char **strings, int low, int high);
 
 /* EXECS */
 /* Main */
