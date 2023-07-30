@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 00:22:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/28 22:46:12 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:18:52 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,20 @@ int	size_minus_quotes(char *arg, int len)
 		i++;
 	}
 	return (len);
+}
+
+int	has_expanded_var(char *arg, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (arg[i] == '\'' && quote_closes(&arg[i]))
+			i += goto_next_quote(arg);
+		if (arg[i] == '$' && is_a_quoted_var(&arg[i + 1]))
+			return (1);
+		i++;
+	}
+	return (0);
 }

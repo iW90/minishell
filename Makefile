@@ -6,7 +6,7 @@
 #    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/07/30 13:59:42 by inwagner         ###   ########.fr        #
+#    Updated: 2023/07/30 14:51:46 by inwagner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ FUN			:=	main.c \
 				input_parser.c \
 				input_utils.c \
 				input_stringify.c \
+				input_stringify_expanse.c \
 				input_stringify_utils.c \
 				input_validator.c \
 				input_expand.c \

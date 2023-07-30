@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/30 14:00:25 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/30 14:52:06 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ char	**stringify_envp(t_env *list);
 char	**stringify_args(char *args);
 int		count_list(t_env *list);
 void	copy_key_or_value(t_env *var, char *dst, char *src);
+char	*copy_argument(char *arg, int len, int i, int first);
+char	*copy_with_expanse(char *arg, int len);
 /* PARSE ENV FUNCTIONS */
 // Main
 t_env	*parse_env(char **env);
@@ -85,6 +87,7 @@ int		special_var_treat(char **copy, int *index);
 int		goto_next_quote(char *args);
 int		count_args(char *args);
 int		size_minus_quotes(char *arg, int len);
+int		has_expanded_var(char *arg, int len);
 /* PARSE INPUT FUNCTIONS */
 // Main
 t_cli	*parse_input(char *input, char *path);
