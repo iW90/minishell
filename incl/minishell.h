@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/28 22:48:50 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/07/30 14:00:25 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int		b_unset(t_env *env, char **args);
 void	new_var(t_env *env, char *args);
 int		export_without_args(t_env *env);
 void	ft_quick_sort(char **strings, int low, int high);
+int		ft_strcmp(const char *str1, const char *str2);
 
 /* EXECS */
 /* Main */
