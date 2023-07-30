@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_shifter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 13:50:16 by maalexan          #+#    #+#             */
-/*   Updated: 2023/07/14 16:10:13 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:27:02 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	update_env(char **argv, char *cmd, char *exec)
 {
 	t_ctrl	*control;
 
+	if (!argv && !cmd && !exec)
+		return ;
 	control = get_control();
 	if (exec)
 		control->env = update_underscore(control->env, argv, exec);
