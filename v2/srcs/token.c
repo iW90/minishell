@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 21:43:06 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 17:56:40 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:22:03 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ int	tokenization(char *input)
 		current = get_token(input, &i);
 		link_token(current, control->tokens);
 	}
+	parser();
 	return (0);
 }
