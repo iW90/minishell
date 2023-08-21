@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 22:46:59 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/21 18:57:03 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,10 @@ char	*expand_token(char **str);
 char	*get_var(char *var, int *i);
 
 int		parser(void);
+
+void	assemble_tokens(t_token *tok_nav);
+void	remove_token(t_token *node);
+int		count_args(t_token *node);
+int		prepare_fd(t_token *node, int *fd);
 
 #endif

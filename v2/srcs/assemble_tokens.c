@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/20 22:31:52 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:00:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ char	**assemble_command_node(t_token *node)
 	int		i;
 	int		count;
 	char	**args;
-	t_cli	*temp;
+	t_token	*temp;
 
 	i = 0;
 	if (node->type == BUILTIN || node->type == EXEC)
-		count += count_args(node->next) + 2;
+		count = count_args(node->next) + 2;
 	else
-		count += count_args(node) + 1;
+		count = count_args(node) + 1;
 	args = malloc(sizeof(char *) * count);
 	if (!args)
 		exit_program(OUT_OF_MEMORY);
@@ -87,7 +87,7 @@ void	assemble_tokens(t_token *tok_nav)
 	t_cli	*cli_nav;
 
 	if (!tok_nav)
-		return (NULL);
+		return ;
 	cli_nav = make_new_node(tok_nav);
 	get_control()->commands = cli_nav;
 	while (1)
@@ -96,7 +96,7 @@ void	assemble_tokens(t_token *tok_nav)
 		if (tok_nav->type > PIPE)
 			cli_nav->args = assemble_command_node(tok_nav);
 		else if (tok_nav->type < PIPE)
-			tok_nav = get_last_fd(cli_nav, tok_nav)
+			tok_nav = get_last_fd(cli_nav, tok_nav);
 		else if (pipe(cli_nav->fd) < 0)
 			exit_program(FD_ERROR);
 		tok_nav = tok_nav->next;
