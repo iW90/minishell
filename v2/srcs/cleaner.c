@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 10:25:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/20 13:16:28 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/13 00:30:42 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ void	clear_tokens(t_token *token)
 	free(token);
 }
 
-void	clear_pbox(char **pbox)
+void	clear_ptr_array(char **array)
 {
 	int	i;
 
-	i = -1;
-	while (pbox[++i])
-		if (pbox[i])
-			free(pbox[i]);
-	free(pbox);
+	i = 0;
+	while (array[i])
+		free(array[i++]);
+	free(array);
 }
 
 t_ctrl	*get_control(void)
@@ -63,10 +62,8 @@ void	exit_program(int code)
 		clear_tokens(control->tokens);
 	if (control->path)
 		free(control->path);
-	if (control->pbox)
-		clear_pbox(control->pbox);
 	rl_clear_history();
 	if (code)
-		control->status = code;
+		exit((unsigned char)code);
 	exit((unsigned char)control->status);
 }

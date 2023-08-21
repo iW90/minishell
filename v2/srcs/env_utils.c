@@ -6,19 +6,20 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 13:50:16 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/14 18:33:31 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/12 18:39:18 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_value(char *value)
+char	*get_var_value(char *value, t_env *env_list)
 {
 	char	*list_value;
 	t_env	*env_node;
 
 	list_value = NULL;
-	env_node = search_var(value);
+	env_node = NULL;
+	env_node = search_var(value, env_list);
 	if (env_node)
 		list_value = env_node->value;
 	return (list_value);

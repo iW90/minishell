@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 22:20:34 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/19 13:44:42 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/12 23:44:02 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	get_quote(char *input, int *i)
 	quote = input[(*i)++];
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
+}
+
+int	is_quote(char c)
+{
+	return (c == '\"' || c == '\'');
 }
 
 int	is_bracket(char c)

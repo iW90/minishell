@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 09:34:50 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/14 18:31:36 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/12 18:53:06 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,16 @@ t_env	*add_var(t_env *prev, char *var)
 ** Procura uma variável na lista, e, caso não
 ** encontre, retorna nulo.
 */
-t_env	*search_var(char *var)
+t_env	*search_var(char *str, t_env *list)
 {
-	t_env	*env;
-	int		size;
+	int	size;
 
-	env = get_control()->env;
-	size = ft_strlen(var) + 1;
-	while (env)
+	size = ft_strlen(str) + 1;
+	while (list)
 	{
-		if (!ft_strncmp(var, env->key, size))
-			return (env);
-		env = env->next;
+		if (!ft_strncmp(str, list->key, size))
+			return (list);
+		list = list->next;
 	}
 	return (NULL);
 }
