@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 09:37:46 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 17:55:27 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:46:10 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*set_pipe_token(char *input, int *i, t_token *token)
 {
-	token->type = is_redirector("|");
+	token->type = PIPE;
 	return (copy_str(input, (*i)++, 2));
 }
 

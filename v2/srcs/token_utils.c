@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 10:20:08 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/19 11:19:28 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:55:42 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	is_builtin(char *cmd)
 {
 	return (\
-		!ft_strncmp(cmd, "ping", 5) || \
 		!ft_strncmp(cmd, "cd", 3) || \
 		!ft_strncmp(cmd, "pwd", 4) || \
 		!ft_strncmp(cmd, "echo", 5) || \
@@ -27,15 +26,15 @@ int	is_builtin(char *cmd)
 
 int	is_redirector(char *red)
 {
-	if (ft_strcmp(red, ">>"))
+	if (!ft_strcmp(red, ">>"))
 		return (APPEND);
-	if (ft_strcmp(red, "<<"))
+	if (!ft_strcmp(red, "<<"))
 		return (HEREDOC);
-	if (ft_strcmp(red, ">"))
+	if (!ft_strcmp(red, ">"))
 		return (OVERWRITE);
-	if (ft_strcmp(red, "<"))
+	if (!ft_strcmp(red, "<"))
 		return (INPUT);
-	if (ft_strcmp(red, "|"))
+	if (!ft_strcmp(red, "|"))
 		return (PIPE);
 	return (0);
 }

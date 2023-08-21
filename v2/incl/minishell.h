@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/19 16:03:21 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:20:18 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,10 @@ void	exit_program(int code);
 void	clear_tokens(t_token *token);
 void	clear_pbox(char **array);
 
-char	*parse_path(char *env_path, char *cmd);
+char	*get_exec_path(char *env_path, char *cmd);
 void	call_execve(char *exec, char **args, t_env *env);
 
 int		validate_input(char *input);
-int		is_exec(char *path, char *cmd);
 int		is_bracket(char c);
 int		is_pipe(char c);
 void	get_quote(char *input, int *i);
@@ -136,5 +135,7 @@ char	*set_expanded_token(char *input, int *i);
 
 char	*expand_token(char **str);
 char	*get_var(char *var, int *i);
+
+int		parser(void);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/08/20 18:14:01 by inwagner         ###   ########.fr        #
+#    Updated: 2023/08/20 20:21:04 by inwagner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,9 +33,9 @@ FUN			:=	main.c \
 				env_utils.c \
 				exec_finder.c \
 				exec_run.c \
-				exec_validator.c \
 				input_utils.c \
 				input_validator.c \
+				parser.c \
 				prompt.c \
 				quick_sort.c \
 				signal_handler.c \
