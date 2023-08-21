@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:29:33 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 20:41:57 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:57:51 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,19 @@ static enum e_type	get_type(t_token *token)
 	char	*path;
 	t_env	*envpath;
 
-	envpath = search_var("PATH");
-	if (envpath)
-		path = ft_strdup(envpath->value);
-	if (!path)
-		exit_program(OUT_OF_MEMORY);
-	execpath = get_exec_path(path, token->str);
-	free(path);
 	if (is_builtin(token->str))
 		return (BUILTIN);
+	path = NULL;
+	envpath = search_var("PATH");
+	if (envpath)
+	{
+		path = ft_strdup(envpath->value);
+		if (!path)
+			exit_program(OUT_OF_MEMORY);
+	}
+	execpath = get_exec_path(path, token->str);
+	if (path)
+		free(path);
 	if (execpath)
 		return (set_exec(token, execpath));
 	return (ARGUMENT);
