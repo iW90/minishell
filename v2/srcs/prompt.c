@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 21:52:24 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:28:38 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	prompt_user(const char *prompt)
 	{
 		tokenization(control->input);
 		parser();
-		print_tokens(control->tokens);
+		//print_tokens(control->tokens);
+		clear_tokens(control->tokens);
+		control->tokens = NULL;
 	}
 	free(control->input);
 }
