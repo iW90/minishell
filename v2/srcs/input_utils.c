@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 22:20:34 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/12 23:44:02 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:40:21 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ void	get_quote(char *input, int *i)
 	quote = input[(*i)++];
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
-}
-
-int	is_quote(char c)
-{
-	return (c == '\"' || c == '\'');
 }
 
 int	is_bracket(char c)

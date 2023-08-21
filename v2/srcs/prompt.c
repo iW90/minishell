@@ -6,55 +6,58 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/15 08:10:26 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:45:19 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+char	*print_type(t_token *tokens)
+{
+	if (tokens->type == PIPE)
+		return ("pipe");
+	else if (tokens->type == HEREDOC)
+		return ("heredoc");
+	else if (tokens->type == APPEND)
+		return ("append");
+	else if (tokens->type == INPUT)
+		return ("input");
+	else if (tokens->type == OVERWRITE)
+		return ("overwrite");
+	else if (tokens->type == BUILTIN)
+		return ("builtin");
+	else if (tokens->type == EXEC)
+		return ("exec");
+	else if (tokens->type == ARGUMENT)
+		return ("arg");
+	else
+		return ("");
+}
+
 void	print_tokens(t_token *tokens)
 {
 	if (!tokens)
 		return ;
-	printf("str: %s\n", tokens->str);
-	if (tokens->type == PIPE)
-		printf("pipe\n");
-	else if (tokens->type == HEREDOC)
-		printf("heredoc\n");
-	else if (tokens->type == APPEND)
-		printf("append\n");
-	else if (tokens->type == INPUT)
-		printf("input\n");
-	else if (tokens->type == OVERWRITE)
-		printf("overwrite\n");
-	else if (tokens->type == BUILTIN)
-		printf("builtin\n");
-	else if (tokens->type == EXEC)
-		printf("exec\n");
-	else if (tokens->type == ARGUMENT)
-		printf("arg\n");
+	printf("str: %s | type: %s\n", tokens->str, print_type(tokens));
 	print_tokens(tokens->next);
 }
 
-void	prompt_user(const char *prompt, t_env *env_list)
+void	prompt_user(const char *prompt)
 {
 	t_ctrl	*control;
 
 	control = get_control();
-	set_signals(ACTIVE);
+	set_signals(DEFAULT);
 	control->status = 0;
-	(void)env_list;
-//	control->path = get_var_value("PATH", env_list);
 	control->input = readline(prompt);
 	if (!control->input)
 		exit_program(0);
 	add_history(control->input);
 	if (!validate_input(control->input))
 	{
-		//printf("Teste\n");
 		tokenization(control->input);
+		parser();
 		print_tokens(control->tokens);
 	}
 	free(control->input);
-	control->input = NULL;
 }

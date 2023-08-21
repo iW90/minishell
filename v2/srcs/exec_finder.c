@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_finder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:08:04 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/12 19:50:24 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:37:47 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static char	*search_dot_dirs(char *cmd)
 /*	EXEC SEARCHER
 ** Loops through path variable to find executable file
 */
-char	*parse_path(char *env_path, char *cmd)
+char	*get_exec_path(char *env_path, char *cmd)
 {
 	char	*token;
 	char	*str;

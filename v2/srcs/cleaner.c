@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 10:25:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/13 00:30:42 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:45:49 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,15 @@ void	clear_tokens(t_token *token)
 	free(token);
 }
 
-void	clear_ptr_array(char **array)
+void	clear_pbox(char **pbox)
 {
 	int	i;
 
-	i = 0;
-	while (array[i])
-		free(array[i++]);
-	free(array);
+	i = -1;
+	while (pbox[++i])
+		if (pbox[i])
+			free(pbox[i]);
+	free(pbox);
 }
 
 t_ctrl	*get_control(void)
@@ -60,10 +61,10 @@ void	exit_program(int code)
 		clear_env(control->env);
 	if (control->tokens)
 		clear_tokens(control->tokens);
-	if (control->path)
-		free(control->path);
+	if (control->pbox)
+		clear_pbox(control->pbox);
 	rl_clear_history();
 	if (code)
-		exit((unsigned char)code);
+		control->status = code;
 	exit((unsigned char)control->status);
 }

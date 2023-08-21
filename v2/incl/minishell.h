@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 14:19:49 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:46:59 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@
 */
 enum e_type
 {
-	BUILTIN = 1,
+	APPEND = 1,
+	HEREDOC,
+	OVERWRITE,
+	INPUT,
+	PIPE,
+	BUILTIN,
 	EXEC,
 	ARGUMENT
-	PIPE,
-	HEREDOC,
-	APPEND,
-	INPUT,
-	OVERWRITE,
 };
 
 enum e_quote
@@ -85,10 +85,10 @@ typedef struct s_token
 typedef struct s_ctrl
 {
 	char			*input;
+	char			**pbox;
 	struct s_token	*tokens;
 	struct s_env	*env;
 	struct s_cli	*commands;
-	char			*path;
 	int				status;
 }					t_ctrl;
 
@@ -102,7 +102,7 @@ typedef struct s_cli
 
 /*	Functions
 */
-void	prompt_user(const char *prompt, t_env *env_list);
+void	prompt_user(const char *prompt);
 
 void	set_signals(int mode);
 void	quick_sort(char **strings, int low, int high);
@@ -111,26 +111,47 @@ void	update_env(char **argv, char *cmd, char *exec);
 void	set_var(const char *src, t_env *node);
 t_env	*parse_env(char **env);
 t_env	*remove_var(char *str, t_env *list);
-t_env	*search_var(char *str, t_env *list);
+t_env	*search_var(char *var);
 t_env	*add_var(t_env *prev, char *var);
-char	*get_var_value(char *value, t_env *env_list);
+char	*get_var_value(char *value);
 char	**stringify_env(t_env *list);
 
 t_ctrl	*get_control(void);
 void	exit_program(int code);
 void	clear_tokens(t_token *token);
-void	clear_ptr_array(char **array);
+void	clear_pbox(char **array);
 
-char	*parse_path(char *env_path, char *cmd);
-void	call_execve(char **args, t_env *env);
+char	*get_exec_path(char *env_path, char *cmd);
+void	call_execve(char *exec, char **args, t_env *env);
 
 int		validate_input(char *input);
-int		is_exec(char *path, char *cmd);
-int		is_quote(char c);
 int		is_bracket(char c);
 int		is_pipe(char c);
 void	get_quote(char *input, int *i);
 
+int		is_var(char var);
+int		is_builtin(char *cmd);
+int		is_redirector(char *red);
+int		is_quote(char quote);
+
 int		tokenization(char *input);
+
+int		has_var(char *str);
+void	free_pbox(char **pbox, int size);
+void	null_pbox(char **pbox, int size);
+char	*copy_str(char *input, int start, int len);
+void	link_token(t_token *current, t_token *last);
+
+char	*set_pipe_token(char *input, int *i, t_token *token);
+char	*set_redirector_token(char *input, int *i, t_token *token);
+char	*set_str_token(char *input, int *i);
+
+char	*set_quoted_token(char *input, int *i);
+char	*set_expanded_token(char *input, int *i);
+
+char	*expand_token(char **str);
+char	*get_var(char *var, int *i);
+
+int		parser(void);
 
 #endif

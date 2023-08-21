@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 20:37:15 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/12 20:35:30 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:44:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	main(int argc, char **argv, char **env)
 	control->env = parse_env(env);
 	update_env(argv, NULL, NULL);
 	while (1)
-		prompt_user("msh:> ", control->env);
+		prompt_user("msh:> ");
 	exit_program(0);
 }

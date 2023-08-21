@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/20 22:07:33 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/20 22:31:52 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void	assemble_tokens(t_token *tok_nav)
 	while (1)
 	{
 		cli_nav->type = tok_nav->type;
-		if (tok_nav->type < PIPE)
+		if (tok_nav->type > PIPE)
 			cli_nav->args = assemble_command_node(tok_nav);
-		else if (tok_nav->type > PIPE)
+		else if (tok_nav->type < PIPE)
 			tok_nav = get_last_fd(cli_nav, tok_nav)
 		else if (pipe(cli_nav->fd) < 0)
 			exit_program(FD_ERROR);
