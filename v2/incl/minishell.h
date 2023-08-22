@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 21:50:22 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/22 20:02:46 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,16 @@
 # include <readline/readline.h>
 
 # define OUT_OF_MEMORY 1
+# define CMD_NOT_EXECUTABLE 126
+# define CMD_NOT_FOUND 127
+
 # define ACTIVE 0
 # define INACTIVE 1
 # define DEFAULT 2
+
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 /*	REDIRECTORS
 ** >>	append
@@ -71,6 +78,14 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*prev;
 }					t_token;
+
+typedef struct s_cli
+{
+	char			**args;
+	int				fd[2];
+	enum e_type		type;
+	struct s_cli	*next;
+}					t_cli;
 
 /*	Structs
 */
@@ -118,6 +133,7 @@ int		is_redirector(char *red);
 int		is_quote(char quote);
 
 int		tokenization(char *input);
+int		parser(void);
 
 int		has_var(char *str);
 void	free_pbox(char **pbox, int size);
@@ -135,6 +151,7 @@ char	*set_expanded_token(char *input, int *i);
 char	*expand_token(char **str);
 char	*get_var(char *var, int *i);
 
-int		parser(void);
+
+
 
 #endif
