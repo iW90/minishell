@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/21 22:48:26 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/21 23:03:05 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,31 +95,6 @@ t_cli	*make_new_node(t_token *tok)
 	return (node);
 }
 
-/*
-t_token	*get_last_fd(t_cli *node, t_token *current)
-{
-	t_token	*prev;
-
-	prev = current->prev;
-	while (current && current->type > PIPE)
-	{
-		if (node->fd[0] && (current->type == INPUT || current->type == HEREDOC))
-		{
-			close(node->fd[0]);
-			node->fd[0] = 0;
-		}
-		if (node->fd[1] && (current->type == APPEND || current->type == OVERWRITE))
-		{
-			close(node->fd[1]);
-			node->fd[1] = 0;
-		}
-		if (prepare_fd(current, node->fd) < 0)
-			exit_program(FD_ERROR);
-		current = prev->next;
-	}
-	return (prev);
-}
-*/
 void	pipe_fd(t_token *tok, int *fd)
 {
 	if (fd[0])
@@ -168,11 +143,13 @@ void	assemble_tokens(t_token *tok_nav)
 		else
 			pipe_fd(tok_nav, cli_nav->fd);
 		tok_nav = get_control()->tokens;
-		if (tok_nav)
-			cli_nav->next = make_new_node(tok_nav);
-		else
+		if (!tok_nav)
 			break ;
-		cli_nav = cli_nav->next;
+		else if (tok_nav->type > PIPE)
+		{
+			cli_nav->next = make_new_node(tok_nav);
+			cli_nav = cli_nav->next;
+		}
 	}
 }
 
