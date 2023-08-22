@@ -6,13 +6,13 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/21 20:56:50 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/21 21:50:29 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*print_type(t_token *tokens)
+static char	*print_type(t_token *tokens)
 {
 	if (tokens->type == PIPE)
 		return ("pipe");
@@ -34,7 +34,7 @@ char	*print_type(t_token *tokens)
 		return ("");
 }
 
-void	print_tokens(t_token *tokens)
+static void	print_tokens(t_token *tokens)
 {
 	if (!tokens)
 		return ;

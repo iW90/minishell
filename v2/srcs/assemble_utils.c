@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 20:49:48 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/21 19:39:01 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/21 22:51:39 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ void	remove_token(t_token *node)
 		free(node->str);
 	free(node);
 	if (prev)
-        prev->next = next;
-    if (next)
-        next->prev = prev;
+		prev->next = next;
+	if (next)
+		next->prev = prev;
+	if (!prev && !next)
+		get_control()->tokens = NULL;
 }
 
 /*
@@ -101,31 +103,6 @@ int	prepare_fd(t_token *node, int *fd)
 		return (-1);
 	return (0);
 }
-
-
-/*
-**	Takes the end of a list and pipe it
-**	so each fd is ready to be dupped on
-**	executing the commands
-*/
-/*
-t_cli	set_pipe(t_cli *prev)
-{
-	t_cli	*node;
-
-	node = malloc(sizeof(t_cli));
-	if (!node)
-		exit_program(OUT_OF_MEMORY);
-	*node = (t_cli){0};
-	prev->next = node;
-	node->type = PIPE;
-	pipe(prev->fd);
-	return (node);
-}
-*/
-
-
-
 
 
 /*

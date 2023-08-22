@@ -6,18 +6,52 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/21 19:00:35 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/21 22:48:26 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*print_type(t_token *tokens)
+{
+	if (tokens->type == PIPE)
+		return ("pipe");
+	else if (tokens->type == HEREDOC)
+		return ("heredoc");
+	else if (tokens->type == APPEND)
+		return ("append");
+	else if (tokens->type == INPUT)
+		return ("input");
+	else if (tokens->type == OVERWRITE)
+		return ("overwrite");
+	else if (tokens->type == BUILTIN)
+		return ("builtin");
+	else if (tokens->type == EXEC)
+		return ("exec");
+	else if (tokens->type == ARGUMENT)
+		return ("arg");
+	else
+		return ("");
+}
+
+static void	print_token(t_token *tokens)
+{
+	static int count;
+
+	if (!tokens)
+	{
+		printf("no tokens here\n");
+		count = 0;
+		return ;
+	}
+	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens));
+}
 
 /*
 **	Builds the arguments for a node that
 **	starts with an argument, a builtin or exec
 **	getting rid of the t_tokens as it goes
 */
-
 char	**assemble_command_node(t_token *node)
 {
 	int		i;
@@ -33,14 +67,17 @@ char	**assemble_command_node(t_token *node)
 	args = malloc(sizeof(char *) * count);
 	if (!args)
 		exit_program(OUT_OF_MEMORY);
-	while (i < count)
+	printf("Count is %i\n", count);
+	while (i < count - 1)
 	{
 		args[i++] = node->str;
+		printf ("args[%i] is %s\n", i - 1, args[i - 1]);
 		node->str = NULL;
 		temp = node->next;
 		remove_token(node);
 		node = temp;
 	}
+	get_control()->tokens = node;
 	args[i] = NULL;
 	return (args);
 }
@@ -58,6 +95,7 @@ t_cli	*make_new_node(t_token *tok)
 	return (node);
 }
 
+/*
 t_token	*get_last_fd(t_cli *node, t_token *current)
 {
 	t_token	*prev;
@@ -81,6 +119,35 @@ t_token	*get_last_fd(t_cli *node, t_token *current)
 	}
 	return (prev);
 }
+*/
+void	pipe_fd(t_token *tok, int *fd)
+{
+	if (fd[0])
+		close(fd[0]);
+	if (fd[1])
+		close(fd[1]);
+	if (pipe(fd) < 0)
+		exit_program(FD_ERROR);
+	get_control()->tokens = tok->next;
+	remove_token(tok);
+}
+
+void	get_fd(t_token *tok, int *fd)
+{
+	get_control()->tokens = tok->next->next;
+	if (fd[0] && (tok->type == INPUT || tok->type == HEREDOC))
+	{
+		close(fd[0]);
+		fd[0] = 0;
+	}
+	if (fd[1] && (tok->type == APPEND || tok->type == OVERWRITE))
+	{
+		close(fd[1]);
+		fd[1] = 0;
+	}
+	if (prepare_fd(tok, fd) < 0)
+		exit_program(FD_ERROR);
+}
 
 void	assemble_tokens(t_token *tok_nav)
 {
@@ -92,14 +159,15 @@ void	assemble_tokens(t_token *tok_nav)
 	get_control()->commands = cli_nav;
 	while (1)
 	{
+		print_token(tok_nav);
 		cli_nav->type = tok_nav->type;
 		if (tok_nav->type > PIPE)
 			cli_nav->args = assemble_command_node(tok_nav);
 		else if (tok_nav->type < PIPE)
-			tok_nav = get_last_fd(cli_nav, tok_nav);
-		else if (pipe(cli_nav->fd) < 0)
-			exit_program(FD_ERROR);
-		tok_nav = tok_nav->next;
+			get_fd(tok_nav, cli_nav->fd);
+		else
+			pipe_fd(tok_nav, cli_nav->fd);
+		tok_nav = get_control()->tokens;
 		if (tok_nav)
 			cli_nav->next = make_new_node(tok_nav);
 		else
@@ -107,7 +175,6 @@ void	assemble_tokens(t_token *tok_nav)
 		cli_nav = cli_nav->next;
 	}
 }
-
 
 /*
 Model tokens
