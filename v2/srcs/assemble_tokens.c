@@ -6,29 +6,29 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/21 23:03:05 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/22 14:34:47 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*print_type(t_token *tokens)
+static char	*print_type(int type)
 {
-	if (tokens->type == PIPE)
+	if (type == PIPE)
 		return ("pipe");
-	else if (tokens->type == HEREDOC)
+	else if (type == HEREDOC)
 		return ("heredoc");
-	else if (tokens->type == APPEND)
+	else if (type == APPEND)
 		return ("append");
-	else if (tokens->type == INPUT)
+	else if (type == INPUT)
 		return ("input");
-	else if (tokens->type == OVERWRITE)
+	else if (type == OVERWRITE)
 		return ("overwrite");
-	else if (tokens->type == BUILTIN)
+	else if (type == BUILTIN)
 		return ("builtin");
-	else if (tokens->type == EXEC)
+	else if (type == EXEC)
 		return ("exec");
-	else if (tokens->type == ARGUMENT)
+	else if (type == ARGUMENT)
 		return ("arg");
 	else
 		return ("");
@@ -44,7 +44,40 @@ static void	print_token(t_token *tokens)
 		count = 0;
 		return ;
 	}
-	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens));
+	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens->type));
+}
+
+static void	print_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	if (!args || !*args)
+	{
+		printf("No args\n");
+		return ;
+	}
+	while(*args)
+		printf("arg[%i] %s / ", i++, *args++);
+	printf("EOA\n");
+}
+
+static void print_cli(void)
+{
+	t_cli	*current;
+	int		i;
+
+	i = 1;
+	current = get_control()->commands;
+	while (current)
+	{
+		printf("\nCli number %i\n", i++);
+		if (current->args)
+			print_args(current->args);
+		printf("fd0 is %i and fd1 is %i\n", current->fd[0], current->fd[1]);
+		printf("type %s\n", print_type(current->type));
+		current = current->next;
+	}
 }
 
 /*
@@ -151,6 +184,7 @@ void	assemble_tokens(t_token *tok_nav)
 			cli_nav = cli_nav->next;
 		}
 	}
+	print_cli();
 }
 
 /*
