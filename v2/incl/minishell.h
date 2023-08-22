@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/22 20:02:46 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/22 20:20:30 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,16 @@ char	*set_expanded_token(char *input, int *i);
 char	*expand_token(char **str);
 char	*get_var(char *var, int *i);
 
+void	call_builtin(t_cli *cli);
+int		b_cd(char **path);
+int		b_echo(char **args);
+int		b_env(char **path, t_env *list);
+int		b_exit(char **args);
+int		b_export(t_env *env, char **args);
+int		b_pwd(void);
+int		b_unset(char **args, t_env *env);
+
+int		export_without_args(t_env *env);
 
 
 
