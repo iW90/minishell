@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/22 14:34:47 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/22 21:35:54 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*print_type(int type)
 	else
 		return ("");
 }
-
+/*
 static void	print_token(t_token *tokens)
 {
 	static int count;
@@ -46,7 +46,7 @@ static void	print_token(t_token *tokens)
 	}
 	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens->type));
 }
-
+*/
 static void	print_args(char **args)
 {
 	int	i;
@@ -100,11 +100,11 @@ char	**assemble_command_node(t_token *node)
 	args = malloc(sizeof(char *) * count);
 	if (!args)
 		exit_program(OUT_OF_MEMORY);
-	printf("Count is %i\n", count);
+//	printf("Count is %i\n", count);
 	while (i < count - 1)
 	{
 		args[i++] = node->str;
-		printf ("args[%i] is %s\n", i - 1, args[i - 1]);
+//		printf ("args[%i] is %s\n", i - 1, args[i - 1]);
 		node->str = NULL;
 		temp = node->next;
 		remove_token(node);
@@ -167,7 +167,7 @@ void	assemble_tokens(t_token *tok_nav)
 	get_control()->commands = cli_nav;
 	while (1)
 	{
-		print_token(tok_nav);
+//		print_token(tok_nav);
 		cli_nav->type = tok_nav->type;
 		if (tok_nav->type > PIPE)
 			cli_nav->args = assemble_command_node(tok_nav);
@@ -178,7 +178,7 @@ void	assemble_tokens(t_token *tok_nav)
 		tok_nav = get_control()->tokens;
 		if (!tok_nav)
 			break ;
-		else if (tok_nav->type > PIPE)
+		else if (tok_nav->type >= PIPE)
 		{
 			cli_nav->next = make_new_node(tok_nav);
 			cli_nav = cli_nav->next;
