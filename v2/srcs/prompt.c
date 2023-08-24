@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 20:26:33 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/21 19:39:12 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	prompt_user(const char *prompt)
 	control = get_control();
 	set_signals(DEFAULT);
 	control->status = 0;
-	control->path = get_var_value("PATH");
 	control->input = readline(prompt);
 	if (!control->input)
 		exit_program(0);
@@ -59,6 +58,8 @@ void	prompt_user(const char *prompt)
 		tokenization(control->input);
 		parser();
 		print_tokens(control->tokens);
+		clear_tokens(control->tokens);
+		control->tokens = NULL;
 	}
 	free(control->input);
 }

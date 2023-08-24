@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 20:20:18 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 21:50:22 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ typedef struct s_ctrl
 	char			*input;
 	struct s_token	*tokens;
 	struct s_env	*env;
-	char			*path;
 	char			**pbox;
 	int				status;
 }					t_ctrl;

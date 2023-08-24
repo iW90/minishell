@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 09:37:46 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 20:46:10 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/20 21:54:39 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,20 @@ char	*set_str_token(char *input, int *i)
 	char	*str2;
 	char	*full;
 
-	str1 = NULL;
+	full = get_str_token(input, i);
+	str1 = full;
 	while (input[*i] && \
 			!ft_isblank(input[*i]) && \
 			!is_bracket(input[*i]) && \
 			!is_pipe(input[*i]))
 	{
-		full = get_str_token(input, i);
-		if (!str1)
-			str1 = full;
-		else if (full)
-		{
-			str2 = full;
-			full = ft_strjoin(str1, str2);
-			free(str1);
-			free(str2);
-		}
+		str2 = get_str_token(input, i);
+		full = ft_strjoin(str1, str2);
+		free(str1);
+		free(str2);
+		str1 = NULL;
+		str2 = NULL;
+		str1 = full;
 	}
 	return (full);
 }
