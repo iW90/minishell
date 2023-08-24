@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/21 20:55:34 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 20:41:44 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define OUT_OF_MEMORY 1
-# define FD_ERROR 2
-# define ACTIVE 0
-# define INACTIVE 1
-# define DEFAULT 2
+# define OUT_OF_MEMORY 12
+# define DEFAULT 0
+# define ACTIVE 1
+# define INACTIVE 2
 
 /*	REDIRECTORS
 ** |	pipe
@@ -100,6 +99,12 @@ typedef struct s_cli
 	struct s_cli	*next;
 }					t_cli;
 
+typedef struct s_here
+{
+	int				fd;
+	struct s_here	*next;
+}					t_here;
+
 /*	Functions
 */
 void	prompt_user(const char *prompt);
@@ -155,8 +160,15 @@ char	*get_var(char *var, int *i);
 int		parser(void);
 
 void	assemble_tokens(t_token *tok_nav);
+
 void	remove_token(t_token *node);
 int		count_args(t_token *node);
-int		prepare_fd(t_token *node, int *fd);
+int		count_nodes(t_token *tok);
+
+t_cli	*make_new_cli(t_here *head);
+
+t_here	*get_heredocs(t_token *tok);
+void    free_heredocs(t_here *doc);
+void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
 
 #endif

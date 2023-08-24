@@ -6,13 +6,13 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 20:19:21 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 20:40:48 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cli	*pipe_fd(t_token *tok, t_cli *cli)
+static t_cli	*pipe_fd(t_token *tok, t_cli *cli)
 {
 	if (!cli)
 		return (NULL);
@@ -27,7 +27,7 @@ t_cli	*pipe_fd(t_token *tok, t_cli *cli)
 **	Makes sure the t_cli node has it's input and
 **	output file descriptor properly set
 */
-int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
+static int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
 {
 	t_token	*next;
 	char	*file;
@@ -55,7 +55,7 @@ int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
 	return (0);
 }
 
-t_here	*get_fd(t_token *tok, int *fd, t_here *heredocs)
+static t_here	*get_fd(t_token *tok, int *fd, t_here *heredocs)
 {
 	int		type;
 	t_here	*start;
@@ -66,14 +66,14 @@ t_here	*get_fd(t_token *tok, int *fd, t_here *heredocs)
 	{
 		close(fd[0]);
 		fd[0] = 0;
-		if (prepare_fd(tok, cli->fd, heredocs) < 0)
+		if (prepare_fd(tok, fd, heredocs) < 0)
 			fd[0] = -1;
 	}
 	if (fd[1] > 0 && (type == APPEND || type == OVERWRITE))
 	{
 		close(fd[1]);
 		fd[1] = 0;
-		if (prepare_fd(tok, cli->fd, heredocs) < 0)
+		if (prepare_fd(tok, fd, heredocs) < 0)
 			fd[1] = -1;
 	}
 	if (type == HEREDOC)
@@ -94,7 +94,7 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 		cli->next = make_new_cli(heredocs);
 		cli = cli->next;
 	}
-	cli = get_control()->cli;
+	cli = get_control()->commands;
 	while (tok)
 	{
 		if (tok->type > PIPE)
@@ -105,7 +105,7 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 			if (tok->type == PIPE)
 				cli = pipe_fd(tok->next, cli->next);
 			else
-				heredocs = get_fd(tok->next, cli, heredocs);
+				heredocs = get_fd(tok->next, cli->fd, heredocs);
 		}
 		tok = tok->next;
 		cli = cli->next;

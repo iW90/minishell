@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 20:27:38 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 20:41:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void print_cli(void)
 **	starts with an argument, a builtin or exec
 **	getting rid of the t_tokens as it goes
 */
-char	**assemble_command_node(t_token *node)
+static char	**assemble_command_node(t_token *node)
 {
 	int		i;
 	int		count;
@@ -122,9 +122,9 @@ void	assemble_tokens(t_token *tok)
 
 	if (!tok)
 		return ;
-	cli = make_new_node();
-	get_control()->commands = cli;
 	heredocs = get_heredocs(tok);
+	cli = make_new_cli(heredocs);
+	get_control()->commands = cli;
 	// If !heredocs && last->exit = ?? aborta tudo
 	assemble_fds(cli, tok, heredocs);
 	while (1)

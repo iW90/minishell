@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 16:48:36 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 20:42:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	receive the user's input and writes
 **	it to an fd while it's open
 */
-int here_doc(char *delim)
+static int here_doc(char *delim)
 {
 	char	*line;
 	int		fd[2];
@@ -43,14 +43,12 @@ int here_doc(char *delim)
 	return(fd[0]);
 }
 
-int	has_heredoc(t_token	*tok, int segment)
+static int	has_heredoc(t_token	*tok)
 {
 	while (tok)
 	{
 		if (tok->type == HEREDOC)
 			return (1);
-		if (tok->type == PIPE && segment)
-			return (0);
 		tok = tok->next;
 	}
 	return (0);
@@ -81,10 +79,11 @@ static t_here	*make_new_heredoc(t_here *head)
 t_here	*get_heredocs(t_token *tok)
 {
 	t_here	*start;
+	t_here	*cursor;
 
-	if (!has_heredoc(tok, 0))
+	if (!has_heredoc(tok))
 		return (NULL);
-	start = make_new_heredoc();
+	start = make_new_heredoc(NULL);
 	cursor = start;
 	while (tok)
 	{
@@ -94,9 +93,9 @@ t_here	*get_heredocs(t_token *tok)
 				close(cursor->fd);
 			cursor->fd = here_doc(tok->next->str);
 		}
-		else if (tok->type == PIPE && has_heredoc(tok, 0))
+		else if (tok->type == PIPE && has_heredoc(tok))
 		{
-			cursor->next = make_new_heredoc();
+			cursor->next = make_new_heredoc(start);
 			cursor = cursor->next;
 		}
 		tok = tok->next;
