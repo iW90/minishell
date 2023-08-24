@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/22 21:35:54 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/23 22:52:38 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,10 @@ char	**assemble_command_node(t_token *node)
 	return (args);
 }
 
-t_cli	*make_new_node(t_token *tok)
+t_cli	*make_new_node(void)
 {
 	t_cli	*node;
 
-	if (!tok)
-		return (NULL);
 	node = malloc(sizeof(t_cli));
 	if (!node)
 		exit_program(OUT_OF_MEMORY);
@@ -142,8 +140,7 @@ void	pipe_fd(t_token *tok, int *fd)
 
 void	get_fd(t_token *tok, int *fd)
 {
-	get_control()->tokens = tok->next->next;
-	if (fd[0] && (tok->type == INPUT || tok->type == HEREDOC))
+	if (fd[0] && (tok->type == INPUT))
 	{
 		close(fd[0]);
 		fd[0] = 0;
@@ -157,31 +154,78 @@ void	get_fd(t_token *tok, int *fd)
 		exit_program(FD_ERROR);
 }
 
-void	assemble_tokens(t_token *tok_nav)
+void	file_descriptors(t_token *tok, t_cli *cli)
 {
-	t_cli	*cli_nav;
+	while (tok)
+	{
+		if (tok->type < PIPE)
+		{
+			tok = tok->prev;
+			get_fd(tok->next, cli->fd);
+		}
+		else if (tok->type == PIPE)
+		{
+			while (cli->type != PIPE)
+				cli = cli->next;
+			cli = cli->next;
+		}
+		tok = tok->next;
+	}
+}
 
-	if (!tok_nav)
+void	heredocs_and_pipes(t_token *tok, t_cli *cli)
+{
+	while (tok)
+	{
+		if (tok->type == PIPE)
+		{
+			cli->next = make_new_node();
+			cli = cli->next;
+			cli->type = PIPE;
+			cli->next = make_new_node();
+			cli = cli->next;
+			tok = tok->next;
+		}
+		else if (tok->type == HEREDOC)
+		{
+			tok = tok->prev;
+			if (cli->fd[0])
+				close(cli->fd[0]);
+			cli->fd[0] = 0;
+			if (prepare_fd(tok->next, cli->fd) < 0)
+				exit_program(FD_ERROR);
+		}
+		else
+			while (tok && tok->type != PIPE && tok->type != HEREDOC)
+				tok = tok->next;
+	}
+}
+
+void	assemble_tokens(t_token *tok)
+{
+	t_cli	*cli;
+
+	if (!tok)
 		return ;
-	cli_nav = make_new_node(tok_nav);
-	get_control()->commands = cli_nav;
+	cli = make_new_node();
+	get_control()->commands = cli;
 	while (1)
 	{
-//		print_token(tok_nav);
-		cli_nav->type = tok_nav->type;
-		if (tok_nav->type > PIPE)
-			cli_nav->args = assemble_command_node(tok_nav);
-		else if (tok_nav->type < PIPE)
-			get_fd(tok_nav, cli_nav->fd);
+//		print_token(tok);
+		cli->type = tok->type;
+		if (tok->type > PIPE)
+			cli->args = assemble_command_node(tok);
+		else if (tok->type < PIPE)
+			get_fd(tok, cli->fd);
 		else
-			pipe_fd(tok_nav, cli_nav->fd);
-		tok_nav = get_control()->tokens;
-		if (!tok_nav)
+			pipe_fd(tok, cli->fd);
+		tok = get_control()->tokens;
+		if (!tok)
 			break ;
-		else if (tok_nav->type >= PIPE)
+		else if (tok->type >= PIPE)
 		{
-			cli_nav->next = make_new_node(tok_nav);
-			cli_nav = cli_nav->next;
+			cli->next = make_new_node();
+			cli = cli->next;
 		}
 	}
 	print_cli();

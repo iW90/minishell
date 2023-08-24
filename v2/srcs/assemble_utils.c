@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 20:49:48 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/22 22:18:36 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/23 22:25:16 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	prepare_fd(t_token *node, int *fd)
 	return (0);
 }
 
-/*
+ /*
 token tok1						token tok2					token tok3						token tok4						token tok5
 {								{							{								{								{
 	tok1->str = "cat";				tok2->str = "file";			tok3->str = ">>";				tok4->str = "outputted";		tok5->str = "|";
