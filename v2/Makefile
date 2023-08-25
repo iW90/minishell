@@ -6,7 +6,7 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/08/24 20:31:13 by maalexan         ###   ########.fr        #
+#    Updated: 2023/08/24 20:51:49 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,7 @@ $(OBJ_DIR)/%.o: $(BSRC_DIR)/%.c
 	@cc $(BCFLAGS) -c $< -o $@
 
 val: all
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./${NAME} || echo ""
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./${NAME} || echo ""
 
 clean:
 	@$(MAKE) -C $(FTLIB_DIR) --silent clean

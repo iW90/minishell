@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 20:41:35 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 23:27:54 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static char	*print_type(int type)
 	else
 		return ("");
 }
-/*
-static void	print_token(t_token *tokens)
+
+void	print_token(t_token *tokens)
 {
 	static int count;
 
@@ -46,7 +46,7 @@ static void	print_token(t_token *tokens)
 	}
 	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens->type));
 }
-*/
+
 static void	print_args(char **args)
 {
 	int	i;
@@ -62,7 +62,7 @@ static void	print_args(char **args)
 	printf("EOA\n");
 }
 
-static void print_cli(void)
+void print_cli(void)
 {
 	t_cli	*current;
 	int		i;

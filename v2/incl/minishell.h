@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/24 20:41:44 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 23:27:42 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,5 +170,9 @@ t_cli	*make_new_cli(t_here *head);
 t_here	*get_heredocs(t_token *tok);
 void    free_heredocs(t_here *doc);
 void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
+
+//remove
+void print_cli(void);
+void	print_token(t_token *tokens);
 
 #endif
