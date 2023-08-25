@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 23:27:54 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 23:33:52 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	print_token(t_token *tokens)
 		return ;
 	}
 	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens->type));
+	print_token(tokens->next);
 }
 
 static void	print_args(char **args)

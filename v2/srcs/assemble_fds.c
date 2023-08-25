@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 23:28:10 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/24 23:45:53 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,37 +61,37 @@ static int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
 static t_here	*get_fd(t_token *tok, int *fd, t_here *heredocs)
 {
 	int		redirector;
-	t_here	*start;
 
-	start = heredocs;
 	redirector = tok->type;
 	if (fd[0] > 0 && (redirector == INPUT || redirector == HEREDOC))
 	{
 		close(fd[0]);
 		fd[0] = 0;
-		if (prepare_fd(tok, fd, heredocs) < 0)
-			fd[0] = -1;
 	}
 	if (fd[1] > 0 && (redirector == APPEND || redirector == OVERWRITE))
 	{
 		close(fd[1]);
 		fd[1] = 0;
-		if (prepare_fd(tok, fd, heredocs) < 0)
+	}
+	if (prepare_fd(tok, fd, heredocs) < 0)
+	{
+		if ((redirector == INPUT || redirector == HEREDOC))
+			fd[0] = -1;
+		if ((redirector == APPEND || redirector == OVERWRITE))
 			fd[1] = -1;
 	}
 	if (redirector == HEREDOC && heredocs)
-	{
-		heredocs = heredocs->next;
-		free(start);
-	}
+		return (heredocs->next);
 	return (heredocs);
 }
 
 void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 {
-	int	nodes;
+	int		nodes;
+	t_here	*head;
 
 	nodes = count_nodes(tok);
+	head = heredocs;
 	while (--nodes)
 	{
 		cli->next = make_new_cli(heredocs);
@@ -107,9 +107,9 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 				cli = pipe_fd(tok->next, cli->next);
 			else
 				heredocs = get_fd(tok->next, cli->fd, heredocs);
-			tok = tok->next;
 		}
 		tok = tok->next;
 	}
+	free_heredocs(head);
 	print_token(get_control()->tokens);
 }
