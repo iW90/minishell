@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 23:33:52 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/25 11:54:05 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,8 @@ void	assemble_tokens(t_token *tok)
 		tok = get_control()->tokens;
 		if (!tok)
 			break ;
-		else if (tok->type == PIPE)
+		cli = cli->next;
+		if (cli->type == PIPE)
 			cli = cli->next;
 	}
 	print_cli();
