@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:57:15 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 16:49:41 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 17:19:50 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	is_flag(char *flag)
 
 int	b_echo(char **args)
 {
-	if (!args[0])
+	if (!args)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	else if (is_flag(*args))
 		print_args(++args);
