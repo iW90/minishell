@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:35:22 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 17:52:43 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:20:14 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ static char	*get_unquote(char *input, int *i)
 	return (str);
 }
 
-char	*set_expanded_token(char *input, int *i)
+static char	**get_str(char *input, int *i)
 {
 	t_ctrl	*control;
-	char	*str;
 	char	quote;
 
 	quote = 0;
@@ -62,11 +61,22 @@ char	*set_expanded_token(char *input, int *i)
 		control->pbox[3] = set_quoted_token(input, i);
 	else
 		control->pbox[3] = get_unquote(input, i);
-	while (has_var(control->pbox[3]))
-		control->pbox[3] = expand_token(control->pbox);
-	str = control->pbox[3];
-	control->pbox[3] = NULL;
-	clear_pbox(control->pbox);
-	control->pbox = NULL;
+	return (control->pbox);
+}
+
+char	*set_expanded_token(char *input, int *i)
+{
+	char	*str;
+	char	**pbox;
+	int		j;
+
+	j = 0;
+	pbox = get_str(input, i);
+	while (has_var(&pbox[3][j]))
+		pbox[3] = expand_token(pbox, &j);
+	str = pbox[3];
+	pbox[3] = NULL;
+	clear_pbox(pbox);
+	get_control()->pbox = NULL;
 	return (str);
 }

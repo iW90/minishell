@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/26 22:08:42 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:18:01 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 ** >	overwrite
 ** >>	append
 */
-enum e_type
+typedef enum e_type
 {
 	APPEND = 1,
 	HEREDOC,
@@ -53,7 +53,7 @@ enum e_type
 	BUILTIN,
 	EXEC,
 	ARGUMENT
-};
+}	t_type;
 
 enum e_quote
 {
@@ -73,8 +73,7 @@ typedef struct s_env
 typedef struct s_token
 {
 	char			*str;
-	enum e_type		type;
-	enum e_quote	quote;
+	t_type			type;
 	struct s_token	*next;
 	struct s_token	*prev;
 }					t_token;
@@ -84,10 +83,9 @@ typedef struct s_token
 typedef struct s_ctrl
 {
 	char			*input;
+	t_token			*tokens;
+	t_env			*env;
 	char			**pbox;
-	struct s_token	*tokens;
-	struct s_env	*env;
-	struct s_cli	*commands;
 	int				status;
 }					t_ctrl;
 
@@ -154,7 +152,7 @@ char	*set_str_token(char *input, int *i);
 char	*set_quoted_token(char *input, int *i);
 char	*set_expanded_token(char *input, int *i);
 
-char	*expand_token(char **str);
+char	*expand_token(char **str, int *j);
 char	*get_var(char *var, int *i);
 
 int		parser(void);

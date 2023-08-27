@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:29:33 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/21 20:10:12 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 10:35:30 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,19 @@ static int	is_cmd(t_token *token)
 {
 	if (!token)
 		return (0);
-	return (token->type == BUILTIN || token->type == EXEC || token->type == ARGUMENT);
+	return (token->type == BUILTIN || \
+			token->type == EXEC || \
+			token->type == ARGUMENT);
 }
 
-static enum e_type	set_exec(t_token *token, char *execpath)
+static t_type	set_exec(t_token *token, char *execpath)
 {
 	free(token->str);
 	token->str = execpath;
 	return (EXEC);
 }
 
-static enum e_type	get_type(t_token *token)
+static t_type	get_type(t_token *token)
 {
 	char	*execpath;
 	char	*path;
