@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 20:22:03 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:16:18 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	prepare_here_doc(char *delim, int *fd, t_here *head)
 {
 	t_cli	*cli;
 
-	free_heredocs(head);
+	free_heredocs(head, 0);
 	cli = malloc(sizeof(t_cli));
 	if (!cli)
 		exit_program(OUT_OF_MEMORY);
@@ -90,7 +90,7 @@ static t_here	*make_new_heredoc(t_here *head)
 	node = malloc(sizeof(t_here));
 	if (!node)
 	{
-		free_heredocs(head);
+		free_heredocs(head, 'c');
 		exit_program(OUT_OF_MEMORY);
 	}
 	*node = (t_here){0};
@@ -113,8 +113,6 @@ t_here	*get_heredocs(t_token *tok)
 			if (cursor->fd)
 				close(cursor->fd);
 			cursor->fd = fork_heredoc(tok->next->str, start);
-			static int i;
-			printf("passing here for the %ith time\n", ++i);
 			if (get_control()->status == 130)
 				return (start);
 		}

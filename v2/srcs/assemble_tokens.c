@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 20:02:32 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:08:11 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	assemble_tokens(t_token *tok)
 	heredocs = get_heredocs(tok);
 	if (get_control()->status == 130)
 	{
-		free_heredocs(heredocs);
+		free_heredocs(heredocs, 'c');
 		return ;
 	}
 	cli = make_new_cli(heredocs);

@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 20:49:48 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 19:09:00 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:12:23 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ int	count_nodes(t_token *tok)
 	return (count);
 }
 
-void	free_heredocs(t_here *doc)
+void	free_heredocs(t_here *doc, char closing)
 {
 	if (!doc)
 		return ;
-	free_heredocs(doc->next);
+	free_heredocs(doc->next, closing);
+	if (closing)
+		close(doc->fd);
 	free(doc);
 }
 
@@ -73,7 +75,7 @@ t_cli	*make_new_cli(t_here *head)
 	node = malloc(sizeof(t_cli));
 	if (!node)
 	{
-		free_heredocs(head);
+		free_heredocs(head, 'c');
 		exit_program(OUT_OF_MEMORY);
 	}
 	*node = (t_cli){0};
