@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 22:31:37 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:05:02 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
 	return (0);
 }
 
-static t_here	*get_fd(t_token *tok, int *fd, t_here *heredocs)
+static void get_fd(t_token *tok, int *fd, t_here *heredocs)
 {
 	int		redirector;
 
@@ -80,38 +80,46 @@ static t_here	*get_fd(t_token *tok, int *fd, t_here *heredocs)
 		if ((redirector == APPEND || redirector == OVERWRITE))
 			fd[1] = -1;
 	}
-	if (redirector == HEREDOC && heredocs)
-		return (heredocs->next);
-	return (heredocs);
 }
 
-void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
+static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 {
-	int		nodes;
-	t_here	*head;
-
-	nodes = count_nodes(tok);
-	head = heredocs;
-	while (--nodes)
-	{
-		cli->next = make_new_cli(heredocs);
-		cli = cli->next;
-	}
-	cli = get_control()->commands;
 	while (tok)
 	{
 		if (tok->type <= PIPE)
 		{
 			tok = tok->prev;
 			if (tok->next->type == PIPE)
+			{
 				cli = pipe_fd(tok->next, cli->next);
+				if (heredocs->next)
+					heredocs = heredocs->next;
+			}
 			else
-				heredocs = get_fd(tok->next, cli->fd, heredocs);
+				get_fd(tok->next, cli->fd, heredocs);
 			if (get_control()->status == 130)
-				break ;
+				return (0) ;
 		}
 		tok = tok->next;
 	}
-	free_heredocs(head, 0);
+	return (1);
+}
+
+void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
+{
+	int		nodes;
+	int		assigned;
+
+	nodes = count_nodes(tok);
+	while (--nodes)
+	{
+		cli->next = make_new_cli(heredocs);
+		cli = cli->next;
+	}
+	cli = get_control()->commands;
+	assigned = assign_each_fd(cli, tok, heredocs);
+	free_heredocs(heredocs, 0);
+	if (assigned)
+		printf("done\n");
 	print_token(get_control()->tokens);
 }
