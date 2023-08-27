@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 10:13:36 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 16:46:56 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:05:47 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static char	*join_strs(char **pbox, char *str)
 	return (join_str(pbox, str));
 }
 
-char	*expand_token(char **str)
+char	*expand_token(char **str, int *j)
 {
 	int		i;
 	int		start;
@@ -78,6 +78,7 @@ char	*expand_token(char **str)
 	if (len > 1)
 		str[0] = copy_str(str[3], start, len);
 	str[1] = get_var(str[3], &i);
+	*j = ft_strlen(str[0]) + ft_strlen(str[1]);
 	expanded = join_strs(str, &str[3][i]);
 	free_pbox(str, 4);
 	if (!expanded)

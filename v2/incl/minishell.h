@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 21:50:22 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:05:42 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 ** <	input
 ** |	pipe
 */
-enum e_type
+typedef enum e_type
 {
 	APPEND = 1,
 	HEREDOC,
@@ -53,7 +53,7 @@ enum e_type
 	BUILTIN,
 	EXEC,
 	ARGUMENT
-};
+}	t_type;
 
 /*	Lists
 */
@@ -67,7 +67,7 @@ typedef struct s_env
 typedef struct s_token
 {
 	char			*str;
-	enum e_type		type;
+	t_type			type;
 	struct s_token	*next;
 	struct s_token	*prev;
 }					t_token;
@@ -77,8 +77,8 @@ typedef struct s_token
 typedef struct s_ctrl
 {
 	char			*input;
-	struct s_token	*tokens;
-	struct s_env	*env;
+	t_token			*tokens;
+	t_env			*env;
 	char			**pbox;
 	int				status;
 }					t_ctrl;
@@ -132,7 +132,7 @@ char	*set_str_token(char *input, int *i);
 char	*set_quoted_token(char *input, int *i);
 char	*set_expanded_token(char *input, int *i);
 
-char	*expand_token(char **str);
+char	*expand_token(char **str, int *j);
 char	*get_var(char *var, int *i);
 
 int		parser(void);
