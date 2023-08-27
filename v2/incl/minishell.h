@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 15:47:39 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:51:49 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ t_ctrl	*get_control(void);
 void	exit_program(int code);
 void	clear_tokens(t_token *token);
 void	clear_pbox(char **array);
+void	clear_cli(t_cli *cli);
 
 char	*get_exec_path(char *env_path, char *cmd);
 void	call_execve(char **args, t_env *env);
