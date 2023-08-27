@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 15:42:14 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:46:46 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	prompt_user(const char *prompt)
 	{
 		tokenization(control->input);
 		parser();
-//		print_tokens(control->tokens);
 		assemble_tokens(control->tokens);
 		run_commands();
 		control->tokens = NULL;

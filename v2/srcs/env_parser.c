@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 09:34:50 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 22:36:26 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:46:07 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ void	set_var(const char *src, t_env *node)
 	ft_strlcpy(dst, src, len);
 	c = ft_strchr(dst, '=');
 	if (c)
+	{
 		*c = '\0';
+		node->value = ++c;
+	}
 	node->key = dst;
-	node->value = ++c;
 }
 
 /*	CRIAR VARIÁVEL
