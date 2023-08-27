@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 15:40:51 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:11:40 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 	return (1);
 }
 
-void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
+int	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 {
 	int		nodes;
 	int		assigned;
@@ -119,7 +119,5 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 	cli = get_control()->commands;
 	assigned = assign_each_fd(cli, tok, heredocs);
 	free_heredocs(heredocs, 0);
-	if (assigned)
-		return ;
-	//fd code here
+	return (assigned);
 }

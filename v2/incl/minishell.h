@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 15:51:49 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:11:14 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ int		export_without_args(t_env *env);
 
 
 
-void	assemble_tokens(t_token *tok_nav);
+int		assemble_tokens(t_token *tok_nav);
 
 void	remove_token(t_token *node);
 int		count_args(t_token *node);
@@ -190,7 +190,7 @@ t_cli	*make_new_cli(t_here *head);
 
 t_here	*get_heredocs(t_token *tok);
 void    free_heredocs(t_here *doc, char closing);
-void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
+int		assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
 
 //remove
 void print_cli(void);

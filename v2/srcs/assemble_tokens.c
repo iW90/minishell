@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 15:25:40 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:18:07 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,8 @@ static char	**assemble_command_node(t_token *node)
 	return (args);
 }
 
-void	assemble_tokens(t_token *tok)
+static int	set_command_chain(t_cli *cli, t_token *tok)
 {
-	t_cli	*cli;
-	t_here	*heredocs;
-
-	if (!tok)
-		return ;
-	heredocs = get_heredocs(tok);
-	if (get_control()->status == 130)
-	{
-		free_heredocs(heredocs, 'c');
-		return ;
-	}
-	cli = make_new_cli(heredocs);
-	get_control()->commands = cli;
-	assemble_fds(cli, tok, heredocs);
 	while (1)
 	{
 		cli->type = tok->type;
@@ -77,4 +63,25 @@ void	assemble_tokens(t_token *tok)
 			cli = cli->next;
 		}
 	}
+	return (1);
+}
+
+int	assemble_tokens(t_token *tok)
+{
+	t_cli	*cli;
+	t_here	*heredocs;
+
+	if (!tok)
+		return (0);
+	heredocs = get_heredocs(tok);
+	if (get_control()->status == 130)
+	{
+		free_heredocs(heredocs, 'c');
+		return (0);
+	}
+	cli = make_new_cli(heredocs);
+	get_control()->commands = cli;
+	if (!assemble_fds(cli, tok, heredocs))
+		return (0);
+	return (set_command_chain(cli, tok));
 }
