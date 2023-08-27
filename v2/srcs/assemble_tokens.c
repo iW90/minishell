@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 11:55:07 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 12:17:36 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ void	assemble_tokens(t_token *tok)
 	cli = make_new_cli(heredocs);
 	get_control()->commands = cli;
 	assemble_fds(cli, tok, heredocs);
-	printf("before going to the loop:\n");
-	print_token(tok);
-	print_cli();
 	while (1)
 	{
 		cli->type = tok->type;
@@ -74,7 +71,11 @@ void	assemble_tokens(t_token *tok)
 			break ;
 		cli = cli->next;
 		if (cli->type == PIPE)
+		{
+			tok = tok->next;
+			remove_token(tok->prev);
 			cli = cli->next;
+		}
 	}
 	print_cli();
 }
