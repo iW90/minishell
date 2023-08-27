@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 17:18:10 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 22:31:37 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 		}
 		tok = tok->next;
 	}
-	free_heredocs(head);
+	free_heredocs(head, 0);
 	print_token(get_control()->tokens);
 }
