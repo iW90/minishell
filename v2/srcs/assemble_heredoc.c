@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 22:16:18 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:15:32 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	receive the user's input and writes
 **	it to an fd while it's open
 */
-static void here_doc(char *delim, char *line, int *fd)
+static void	here_doc(char *delim, char *line, int *fd)
 {
 	int		written[2];
 
@@ -25,7 +25,7 @@ static void here_doc(char *delim, char *line, int *fd)
 	{
 		line = readline("> ");
 		if (!line || !ft_strncmp(delim, line, ft_strlen(delim) + 1))
-			break;
+			break ;
 		written[0] = write(fd[1], line, ft_strlen(line));
 		written[1] = write(fd[1], "\n", 1);
 		free(line);
@@ -80,7 +80,7 @@ static int	fork_heredoc(char *delim, t_here *head)
 	}
 	close(fd[1]);
 	set_signals(ACTIVE);
-	return(fd[0]);
+	return (fd[0]);
 }
 
 static t_here	*make_new_heredoc(t_here *head)

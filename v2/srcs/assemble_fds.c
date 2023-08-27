@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 11:05:02 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:37:20 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
 	return (0);
 }
 
-static void get_fd(t_token *tok, int *fd, t_here *heredocs)
+static void	get_fd(t_token *tok, int *fd, t_here *heredocs)
 {
 	int		redirector;
 
@@ -92,13 +92,13 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 			if (tok->next->type == PIPE)
 			{
 				cli = pipe_fd(tok->next, cli->next);
-				if (heredocs->next)
+				if (heredocs && heredocs->next)
 					heredocs = heredocs->next;
 			}
 			else
 				get_fd(tok->next, cli->fd, heredocs);
 			if (get_control()->status == 130)
-				return (0) ;
+				return (0);
 		}
 		tok = tok->next;
 	}

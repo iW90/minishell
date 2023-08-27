@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:34:31 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/26 19:09:28 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 11:15:47 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	null_pbox(char **pbox, int size)
 
 	i = -1;
 	while (++i < size)
-			pbox[i] = NULL;
+		pbox[i] = NULL;
 }
 
 char	*copy_str(char *input, int start, int len)
