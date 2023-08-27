@@ -6,13 +6,13 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 12:01:02 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:40:51 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cli	*pipe_fd(t_token *tok, t_cli *cli)
+static t_cli	*pipe_fd(t_cli *cli)
 {
 	if (!cli)
 		return (NULL);
@@ -22,8 +22,6 @@ static t_cli	*pipe_fd(t_token *tok, t_cli *cli)
 		cli->fd[0] = -1;
 		cli->fd[1] = -1;
 	}
-//	remove_token(tok);
-(void)tok;
 	return (cli->next);
 }
 
@@ -92,7 +90,7 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 			tok = tok->prev;
 			if (tok->next->type == PIPE)
 			{
-				cli = pipe_fd(tok->next, cli->next);
+				cli = pipe_fd(cli->next);
 				tok = tok->next->next;
 				if (heredocs && heredocs->next)
 					heredocs = heredocs->next;
@@ -122,6 +120,6 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 	assigned = assign_each_fd(cli, tok, heredocs);
 	free_heredocs(heredocs, 0);
 	if (assigned)
-		printf("done\n");
-	print_token(get_control()->tokens);
+		return ;
+	//fd code here
 }

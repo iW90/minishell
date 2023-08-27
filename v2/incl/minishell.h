@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 15:18:01 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:31:46 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,6 @@ typedef struct s_token
 
 /*	Structs
 */
-typedef struct s_ctrl
-{
-	char			*input;
-	t_token			*tokens;
-	t_env			*env;
-	char			**pbox;
-	int				status;
-}					t_ctrl;
-
 typedef struct s_cli
 {
 	char			**args;
@@ -96,6 +87,17 @@ typedef struct s_cli
 	enum e_type		type;
 	struct s_cli	*next;
 }					t_cli;
+
+typedef struct s_ctrl
+{
+	char			*input;
+	t_token			*tokens;
+	t_env			*env;
+	t_cli			*commands;
+	char			**pbox;
+	int				status;
+}					t_ctrl;
+
 
 typedef struct s_here
 {
@@ -125,7 +127,7 @@ void	clear_tokens(t_token *token);
 void	clear_pbox(char **array);
 
 char	*get_exec_path(char *env_path, char *cmd);
-void	call_execve(char *exec, char **args, t_env *env);
+void	call_execve(char **args, t_env *env);
 
 int		validate_input(char *input);
 int		is_bracket(char c);

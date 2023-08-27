@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 11:15:32 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:32:14 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	here_doc(char *delim, char *line, int *fd)
 		if (written[0] < 0 || written[1] < 0)
 			break ;
 	}
-	print_cli();
 	exit_program(0);
 }
 
