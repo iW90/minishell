@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 20:56:32 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 15:38:48 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:27:42 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	export_without_args(t_env *env)
 
 	if (!env)
 		return (0);
-	envbox = stringify_envp(env);
+	envbox = stringify_env(env);
 	envhdr = envbox;
 	n = 0;
 	while (envbox[n])
@@ -50,9 +50,9 @@ int	export_without_args(t_env *env)
 		return (0);
 	if (!envbox)
 		return (1);
-	ft_quick_sort(envbox, 0, n - 1);
+	quick_sort(envbox, 0, n - 1);
 	while (*envbox)
 		print_export(*envbox++);
-	clear_ptr_array(envhdr);
+	clear_pbox(envhdr);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 16:07:29 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:39:33 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	run_commands(void)
 	{
 		if (commands->type == EXEC)
 			call_execve(commands->args, get_control()->env);
+		if (commands->type == BUILTIN)
+			call_builtin(commands);
 		commands = commands->next;
 	}
 }

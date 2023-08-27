@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 16:11:14 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:25:23 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int		b_pwd(void);
 int		b_unset(char **args, t_env *env);
 
 int		export_without_args(t_env *env);
-
+void	new_var(t_env *env, char *args);
 
 
 int		assemble_tokens(t_token *tok_nav);

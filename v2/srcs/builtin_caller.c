@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:34:20 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/22 19:07:58 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:24:05 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	call_builtin(t_cli *cli)
 	if (!cli)
 		return ;
 	builtin = cli->args[0];
-	args = cli->args[1];
+	args = &cli->args[1];
 	ctrl = get_control();
 	if (!ft_strcmp(builtin, "cd"))
 		ctrl->status = b_cd(args);

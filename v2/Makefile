@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/08/27 11:30:11 by maalexan         ###   ########.fr        #
+#    Updated: 2023/08/27 16:28:27 by inwagner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,15 @@ FUN			:=	main.c \
 				assemble_heredoc.c \
 				assemble_fds.c \
 				assemble_utils.c \
+				builtin_caller.c \
+				builtin_cd.c \
+				builtin_echo.c \
+				builtin_env.c \
+				builtin_exit.c \
+				builtin_export.c \
+				builtin_pwd.c \
+				builtin_unset.c \
+				builtin_utils.c \
 				cleaner.c \
 				env_parser.c \
 				env_shifter.c \
