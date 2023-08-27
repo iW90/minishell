@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 09:34:50 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/14 18:31:36 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 12:05:22 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ void	set_var(const char *src, t_env *node)
 	ft_strlcpy(dst, src, len);
 	c = ft_strchr(dst, '=');
 	if (c)
+	{
 		*c = '\0';
+		node->value = ++c;
+	}
 	node->key = dst;
-	node->value = ++c;
 }
 
 /*	CRIAR VARIÁVEL

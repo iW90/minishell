@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 20:25:59 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/28 22:40:27 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 12:21:40 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	b_env(char **path, t_env *list)
 	list = list->next;
 	while (list)
 	{
-		print_env(list->key, list->value);
+		if (list->value)
+			print_env(list->key, list->value);
 		list = list->next;
 	}
 	print_env(head->key, head->value);

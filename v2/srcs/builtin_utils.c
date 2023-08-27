@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 20:56:32 by inwagner          #+#    #+#             */
-/*   Updated: 2023/07/28 22:54:26 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 15:38:48 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ static void	print_export(char *key)
 	value++;
 	ft_putstr_fd("declare -x ", STDOUT_FILENO);
 	ft_putstr_fd(key, STDOUT_FILENO);
-	ft_putstr_fd("=\"", STDOUT_FILENO);
 	if (value)
+	{
+		ft_putstr_fd("=\"", STDOUT_FILENO);
 		ft_putstr_fd(value, STDOUT_FILENO);
+	}
 	ft_putstr_fd("\"\n", STDOUT_FILENO);
 }
 
