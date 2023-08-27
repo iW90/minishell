@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/24 23:27:42 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 19:08:21 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 
 # define OUT_OF_MEMORY 12
 # define DEFAULT 0
-# define ACTIVE 1
-# define INACTIVE 2
+# define ACTIVE 42
+# define INACTIVE 43
 
 /*	REDIRECTORS
 ** |	pipe
@@ -164,6 +164,7 @@ void	assemble_tokens(t_token *tok_nav);
 void	remove_token(t_token *node);
 int		count_args(t_token *node);
 int		count_nodes(t_token *tok);
+int		has_heredoc(t_token	*tok);
 
 t_cli	*make_new_cli(t_here *head);
 

@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/24 23:45:53 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 17:18:10 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void	assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs)
 				cli = pipe_fd(tok->next, cli->next);
 			else
 				heredocs = get_fd(tok->next, cli->fd, heredocs);
+			if (get_control()->status == 130)
+				break ;
 		}
 		tok = tok->next;
 	}

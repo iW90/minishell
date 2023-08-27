@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/25 11:54:05 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/26 20:02:32 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,13 @@ void	assemble_tokens(t_token *tok)
 	if (!tok)
 		return ;
 	heredocs = get_heredocs(tok);
+	if (get_control()->status == 130)
+	{
+		free_heredocs(heredocs);
+		return ;
+	}
 	cli = make_new_cli(heredocs);
 	get_control()->commands = cli;
-	// If !heredocs && last->exit = ?? aborta tudo
 	assemble_fds(cli, tok, heredocs);
 	while (1)
 	{
