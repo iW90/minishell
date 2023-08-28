@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 16:39:33 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 22:45:01 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,62 @@ static void	print_tokens(t_token *tokens)
 }
 */
 
-void	run_commands(void)
+static void	fork_command(t_cli *commands)
+{
+	if (commands->fd[0])
+		if (dup2(commands->fd[0], STDIN_FILENO) < 0)
+			exit_program(-1);
+	if (commands->fd[1])
+		if (dup2(commands->fd[1], STDOUT_FILENO) < 0)
+			exit_program(-1);
+	if (commands->type == BUILTIN)
+		call_builtin(commands);
+	else if (commands->type == EXEC)
+		call_execve(commands->args, get_control()->env);
+	exit_program(0);
+}
+
+static int	mother_forker(t_cli *commands)
+{
+	pid_t	forked;
+	int		wstatus;
+
+	wstatus = 0;
+	while (commands)
+	{
+		forked = fork();
+		if (!forked)
+			fork_command(commands);
+		if (forked < 0)
+		{
+			ft_putstr_fd("Failed to create child process\n", STDERR_FILENO);
+			break ;
+		}
+		else
+		{
+			waitpid(forked, &wstatus, 0);
+			if (WIFEXITED(wstatus))
+				get_control()->status = (WEXITSTATUS(wstatus));
+		}
+		commands = commands->next;
+	}
+	return (wstatus);
+}
+
+int	run_commands(void)
 {
 	t_cli	*commands;
 
 	commands = get_control()->commands;
-	while (commands)
-	{
-		if (commands->type == EXEC)
-			call_execve(commands->args, get_control()->env);
-		if (commands->type == BUILTIN)
-			call_builtin(commands);
-		commands = commands->next;
-	}
+	if (!commands)
+		return (0);
+	if (commands->next || commands->fd[0] || commands->fd[1])
+		return (mother_forker(commands));
+	if (commands->type == BUILTIN)
+		call_builtin(commands);
+	else if (commands->type == EXEC)
+		call_execve(commands->args, get_control()->env);
+	return (1);
 }
 
 void	prompt_user(const char *prompt)
