@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 22:45:01 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:48:01 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,14 @@ int	run_commands(void)
 		call_builtin(commands);
 	else if (commands->type == EXEC)
 		call_execve(commands->args, get_control()->env);
+	else
+	{
+		ft_putstr_fd("Command ", STDERR_FILENO);
+		if (commands->args)
+			ft_putstr_fd(commands->args[0], STDERR_FILENO);
+		ft_putstr_fd(" not found\n", STDERR_FILENO);
+		get_control()->status = 127;
+	}
 	return (1);
 }
 
@@ -106,8 +114,7 @@ void	prompt_user(const char *prompt)
 	t_ctrl	*control;
 
 	control = get_control();
-	set_signals(DEFAULT);
-	control->status = 0;
+	set_signals(ACTIVE);
 	control->input = readline(prompt);
 	if (!control->input)
 		exit_program(0);
