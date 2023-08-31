@@ -6,11 +6,80 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 16:18:07 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/30 22:51:01 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*print_type(int type)
+{
+	if (type == PIPE)
+		return ("pipe");
+	else if (type == HEREDOC)
+		return ("heredoc");
+	else if (type == APPEND)
+		return ("append");
+	else if (type == INPUT)
+		return ("input");
+	else if (type == OVERWRITE)
+		return ("overwrite");
+	else if (type == BUILTIN)
+		return ("builtin");
+	else if (type == EXEC)
+		return ("exec");
+	else if (type == ARGUMENT)
+		return ("arg");
+	else
+		return ("");
+}
+
+void	print_token(t_token *tokens)
+{
+	static int	count;
+
+	if (!tokens)
+	{
+		printf("no tokens here\n");
+		count = 0;
+		return ;
+	}
+	printf("I'm at token %i str: %s | type: %s\n", count++, tokens->str, print_type(tokens->type));
+	print_token(tokens->next);
+}
+
+static void	print_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	if (!args || !*args)
+	{
+		printf("No args\n");
+		return ;
+	}
+	while(*args)
+		printf("arg[%i] %s / ", i++, *args++);
+	printf("EOA\n");
+}
+
+void print_cli(void)
+{
+	t_cli	*current;
+	int		i;
+
+	i = 1;
+	current = get_control()->commands;
+	while (current)
+	{
+		printf("\nCli number %i\n", i++);
+		if (current->args)
+			print_args(current->args);
+		printf("fd0 is %i and fd1 is %i\n", current->fd[0], current->fd[1]);
+		printf("type %s\n", print_type(current->type));
+		current = current->next;
+	}
+}
 
 /*
 **	Builds the arguments for a node that
@@ -45,6 +114,49 @@ static char	**assemble_command_node(t_token *node)
 	return (args);
 }
 
+static t_cli	*change_fds(t_cli *before, t_cli *piped, t_cli *after)
+{
+	if (!before || !piped || !after)
+		return (NULL);
+	if (before->fd[1] > 2 || after->fd[0] > 2)
+	{
+		close(piped->fd[0]);
+		close(piped->fd[1]);
+	}
+	else
+	{
+		before->fd[1] = piped->fd[1];
+		after->fd[0] = piped->fd[0];
+	}
+	free(piped);
+	before->next = after;
+	return (after);
+}
+
+static int	pipe_chain(t_cli *cli)
+{
+	t_cli	*piped;
+	t_cli	*after;
+
+	piped = NULL;
+	after = NULL;
+	while (cli)
+	{
+		if (cli->next && cli->next->type == PIPE)
+		{
+			piped = cli->next;
+			if (piped->next && piped->next->type != PIPE)
+				after = piped->next;
+		}
+		if (!piped && !after)
+			return (1);
+		cli = change_fds(cli, piped, after);
+		piped = NULL;
+		after = NULL;
+	}
+	return (0);
+}
+
 static int	set_command_chain(t_cli *cli, t_token *tok)
 {
 	while (1)
@@ -63,7 +175,12 @@ static int	set_command_chain(t_cli *cli, t_token *tok)
 			cli = cli->next;
 		}
 	}
-	return (1);
+	printf("b4\n");
+	print_cli();
+	pipe_chain(get_control()->commands);
+	printf("\naft\n");
+	print_cli();
+	return (0);
 }
 
 int	assemble_tokens(t_token *tok)
