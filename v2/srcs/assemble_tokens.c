@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/30 22:51:01 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/08/30 22:59:09 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,12 +175,8 @@ static int	set_command_chain(t_cli *cli, t_token *tok)
 			cli = cli->next;
 		}
 	}
-	printf("b4\n");
-	print_cli();
 	pipe_chain(get_control()->commands);
-	printf("\naft\n");
-	print_cli();
-	return (0);
+	return (1);
 }
 
 int	assemble_tokens(t_token *tok)
