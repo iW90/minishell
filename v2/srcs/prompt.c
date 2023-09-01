@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/30 22:59:28 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/01 17:34:18 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,31 @@ static void	print_tokens(t_token *tokens)
 
 static void	fork_command(t_cli *commands)
 {
-	if (commands->fd[0])
+	printf("Comming in fork command with fd0: %i and fd1: %i and arg0 = %s\n", commands->fd[0], commands->fd[1], commands->args[0]);
+	if (commands->fd[0] > 0)
+	{
 		if (dup2(commands->fd[0], STDIN_FILENO) < 0)
 			exit_program(-1);
+		close(commands->fd[0]);
+	}
 	if (commands->fd[1])
+	{
 		if (dup2(commands->fd[1], STDOUT_FILENO) < 0)
 			exit_program(-1);
+		close(commands->fd[1]);
+	}
 	if (commands->type == BUILTIN)
 		call_builtin(commands);
 	else if (commands->type == EXEC)
 		call_execve(commands->args, get_control()->env);
+	else
+	{
+		ft_putstr_fd("Command ", STDERR_FILENO);
+		if (commands->args)
+			ft_putstr_fd(commands->args[0], STDERR_FILENO);
+		ft_putstr_fd(" not found\n", STDERR_FILENO);
+		get_control()->status = 127;
+	}
 	exit_program(0);
 }
 
@@ -70,12 +85,13 @@ static int	mother_forker(t_cli *commands)
 		if (!forked)
 			fork_command(commands);
 		if (forked < 0)
-		{
-			ft_putstr_fd("Failed to create child process\n", STDERR_FILENO);
-			break ;
-		}
+			return (-1);
 		else
 		{
+			if (commands->fd[0] > 0)
+				close(commands->fd[0]);
+			if (commands->fd[1] > 0)
+				close(commands->fd[1]);
 			waitpid(forked, &wstatus, 0);
 			if (WIFEXITED(wstatus))
 				get_control()->status = (WEXITSTATUS(wstatus));

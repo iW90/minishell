@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/30 22:59:09 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/01 17:34:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	print_args(char **args)
 	}
 	while(*args)
 		printf("arg[%i] %s / ", i++, *args++);
-	printf("EOA\n");
+	printf("NULL\n");
 }
 
 void print_cli(void)
@@ -175,6 +175,7 @@ static int	set_command_chain(t_cli *cli, t_token *tok)
 			cli = cli->next;
 		}
 	}
+	print_cli();
 	pipe_chain(get_control()->commands);
 	return (1);
 }
