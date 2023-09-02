@@ -6,19 +6,21 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 21:02:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 15:33:19 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 18:55:53 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env	*validate_if_var_exist(t_env *list, char *arg)
+t_env	*validate_if_var_exist(t_env *list, char *arg)
 {
 	int	len;
 
 	len = 0;
-	while (arg[len] || arg[len] != '=')
+	while (arg[len] && arg[len] != '=')
 		len++;
+	if (!arg[len])
+		return (NULL);
 	while (list)
 	{
 		if (!ft_strncmp(arg, list->key, len) && !list->key[len])

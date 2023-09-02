@@ -6,7 +6,7 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/09/02 14:53:06 by maalexan         ###   ########.fr        #
+#    Updated: 2023/09/02 16:12:50 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,10 +37,10 @@ FUN			:=	main.c \
 				builtin_echo.c \
 				builtin_env.c \
 				builtin_exit.c \
+				builtin_export_print.c \
 				builtin_export.c \
 				builtin_pwd.c \
 				builtin_unset.c \
-				builtin_utils.c \
 				cleaner.c \
 				env_parser.c \
 				env_shifter.c \
