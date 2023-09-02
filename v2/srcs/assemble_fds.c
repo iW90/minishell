@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/27 16:11:40 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 00:15:04 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	get_fd(t_token *tok, int *fd, t_here *heredocs)
 	int		redirector;
 
 	redirector = tok->type;
-	if (fd[0] > 0 && (redirector == INPUT || redirector == HEREDOC))
+	if (fd[0] > 0 && (redirector == INPUT))
 	{
 		close(fd[0]);
 		fd[0] = 0;
