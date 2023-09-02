@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 14:49:23 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/12 20:47:39 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/26 18:10:15 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ static void	non_interactive_mode(int sig)
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
+static void	here_docking(int sig)
+{
+	if (sig == SIGINT)
+		exit_program(130);
+}
+
 void	set_signals(int mode)
 {
 	if (mode == ACTIVE)
@@ -68,4 +74,6 @@ void	set_signals(int mode)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 	}
+	if (mode == HEREDOC)
+		signal(SIGINT, here_docking);
 }

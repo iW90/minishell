@@ -6,13 +6,13 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/21 19:39:12 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/08/27 16:39:33 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*print_type(t_token *tokens)
+/*
+static char	*print_type(t_token *tokens)
 {
 	if (tokens->type == PIPE)
 		return ("pipe");
@@ -34,12 +34,28 @@ char	*print_type(t_token *tokens)
 		return ("");
 }
 
-void	print_tokens(t_token *tokens)
+static void	print_tokens(t_token *tokens)
 {
 	if (!tokens)
 		return ;
 	printf("str: %s | type: %s\n", tokens->str, print_type(tokens));
 	print_tokens(tokens->next);
+}
+*/
+
+void	run_commands(void)
+{
+	t_cli	*commands;
+
+	commands = get_control()->commands;
+	while (commands)
+	{
+		if (commands->type == EXEC)
+			call_execve(commands->args, get_control()->env);
+		if (commands->type == BUILTIN)
+			call_builtin(commands);
+		commands = commands->next;
+	}
 }
 
 void	prompt_user(const char *prompt)
@@ -57,9 +73,11 @@ void	prompt_user(const char *prompt)
 	{
 		tokenization(control->input);
 		parser();
-		print_tokens(control->tokens);
-		clear_tokens(control->tokens);
+		if (assemble_tokens(control->tokens))
+			run_commands();
 		control->tokens = NULL;
+		clear_cli(control->commands);
+		control->commands = NULL;
 	}
 	free(control->input);
 }

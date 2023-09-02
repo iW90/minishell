@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 11:05:42 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:13:05 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,24 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define OUT_OF_MEMORY 1
-# define ACTIVE 0
-# define INACTIVE 1
-# define DEFAULT 2
+
+# define OUT_OF_MEMORY 12
+# define DEFAULT 0
+# define ACTIVE 42
+# define INACTIVE 43
+# define CMD_NOT_EXECUTABLE 126
+# define CMD_NOT_FOUND 127
+
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 /*	REDIRECTORS
-** >>	append
+** |	pipe
+** <	input
 ** <<	heredoc
 ** >	overwrite
-** <	input
-** |	pipe
+** >>	append
 */
 typedef enum e_type
 {
@@ -54,6 +61,12 @@ typedef enum e_type
 	EXEC,
 	ARGUMENT
 }	t_type;
+
+enum e_quote
+{
+	SINGLE = 1,
+	DOUBLE
+};
 
 /*	Lists
 */
@@ -74,14 +87,30 @@ typedef struct s_token
 
 /*	Structs
 */
+typedef struct s_cli
+{
+	char			**args;
+	int				fd[2];
+	enum e_type		type;
+	struct s_cli	*next;
+}					t_cli;
+
 typedef struct s_ctrl
 {
 	char			*input;
 	t_token			*tokens;
 	t_env			*env;
+	t_cli			*commands;
 	char			**pbox;
 	int				status;
 }					t_ctrl;
+
+
+typedef struct s_here
+{
+	int				fd;
+	struct s_here	*next;
+}					t_here;
 
 /*	Functions
 */
@@ -97,15 +126,16 @@ t_env	*remove_var(char *str, t_env *list);
 t_env	*search_var(char *var);
 t_env	*add_var(t_env *prev, char *var);
 char	*get_var_value(char *value);
-char	**stringify_env(t_env *list);
+char	**stringify_env(t_env *list, int flag);
 
 t_ctrl	*get_control(void);
 void	exit_program(int code);
 void	clear_tokens(t_token *token);
 void	clear_pbox(char **array);
+void	clear_cli(t_cli *cli);
 
 char	*get_exec_path(char *env_path, char *cmd);
-void	call_execve(char *exec, char **args, t_env *env);
+void	call_execve(char **args, t_env *env);
 
 int		validate_input(char *input);
 int		is_bracket(char c);
@@ -118,6 +148,7 @@ int		is_redirector(char *red);
 int		is_quote(char quote);
 
 int		tokenization(char *input);
+int		parser(void);
 
 int		has_var(char *str);
 void	free_pbox(char **pbox, int size);
@@ -135,6 +166,34 @@ char	*set_expanded_token(char *input, int *i);
 char	*expand_token(char **str, int *j);
 char	*get_var(char *var, int *i);
 
-int		parser(void);
+void	call_builtin(t_cli *cli);
+int		b_cd(char **path);
+int		b_echo(char **args);
+int		b_env(char **path, t_env *list);
+int		b_exit(char **args);
+int		b_export(t_env *env, char **args);
+int		b_pwd(void);
+int		b_unset(char **args, t_env *env);
+
+int		export_without_args(t_env *env);
+void	new_var(t_env *env, char *args);
+t_env	*validate_if_var_exist(t_env *list, char *arg);
+
+int		assemble_tokens(t_token *tok_nav);
+
+void	remove_token(t_token *node);
+int		count_args(t_token *node);
+int		count_nodes(t_token *tok);
+int		has_heredoc(t_token	*tok);
+
+t_cli	*make_new_cli(t_here *head);
+
+t_here	*get_heredocs(t_token *tok);
+void    free_heredocs(t_here *doc, char closing);
+int		assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
+
+//remove
+void print_cli(void);
+void	print_token(t_token *tokens);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/08/20 20:21:04 by inwagner         ###   ########.fr        #
+#    Updated: 2023/09/02 11:18:10 by inwagner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,19 @@ BCFLAGS		:=	-Wall -Wextra -Werror -g -I ./bonus/incl
 
 # Source files
 FUN			:=	main.c \
+				assemble_tokens.c \
+				assemble_heredoc.c \
+				assemble_fds.c \
+				assemble_utils.c \
+				builtin_caller.c \
+				builtin_cd.c \
+				builtin_echo.c \
+				builtin_env.c \
+				builtin_exit.c \
+				builtin_export_print.c \
+				builtin_export.c \
+				builtin_pwd.c \
+				builtin_unset.c \
 				cleaner.c \
 				env_parser.c \
 				env_shifter.c \
@@ -46,7 +59,7 @@ FUN			:=	main.c \
 				token_setter.c \
 				token_str.c \
 				token_utils.c \
-				token.c
+				token.c 
 
 # Object files
 OBJ			:=	$(FUN:%.c=$(OBJ_DIR)/%.o)
@@ -74,7 +87,7 @@ $(OBJ_DIR)/%.o: $(BSRC_DIR)/%.c
 	@cc $(BCFLAGS) -c $< -o $@
 
 val: all
-	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./${NAME} || echo ""
+	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./${NAME} || echo ""
 
 clean:
 	@$(MAKE) -C $(FTLIB_DIR) --silent clean
