@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_utils.c                                    :+:      :+:    :+:   */
+/*   builtin_export_print.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 20:56:32 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 16:27:42 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:20:20 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,11 @@
 
 static void	print_export(char *key)
 {
-	char	*value;
-
 	if (!key)
 		return ;
-	value = key;
-	while (*value != '=')
-		value++;
-	*value = '\0';
-	value++;
 	ft_putstr_fd("declare -x ", STDOUT_FILENO);
 	ft_putstr_fd(key, STDOUT_FILENO);
-	if (value)
-	{
-		ft_putstr_fd("=\"", STDOUT_FILENO);
-		ft_putstr_fd(value, STDOUT_FILENO);
-	}
-	ft_putstr_fd("\"\n", STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
 int	export_without_args(t_env *env)
@@ -41,7 +29,7 @@ int	export_without_args(t_env *env)
 
 	if (!env)
 		return (0);
-	envbox = stringify_env(env);
+	envbox = stringify_env(env, 1);
 	envhdr = envbox;
 	n = 0;
 	while (envbox[n])

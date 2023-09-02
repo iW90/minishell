@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 16:25:23 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:13:05 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ t_env	*remove_var(char *str, t_env *list);
 t_env	*search_var(char *var);
 t_env	*add_var(t_env *prev, char *var);
 char	*get_var_value(char *value);
-char	**stringify_env(t_env *list);
+char	**stringify_env(t_env *list, int flag);
 
 t_ctrl	*get_control(void);
 void	exit_program(int code);
@@ -177,7 +177,7 @@ int		b_unset(char **args, t_env *env);
 
 int		export_without_args(t_env *env);
 void	new_var(t_env *env, char *args);
-
+t_env	*validate_if_var_exist(t_env *list, char *arg);
 
 int		assemble_tokens(t_token *tok_nav);
 
