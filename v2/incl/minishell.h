@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/02 16:13:04 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 20:35:42 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,15 +187,15 @@ int		count_nodes(t_token *tok);
 int		has_heredoc(t_token	*tok);
 
 t_cli	*make_new_cli(t_here *head);
-t_cli	*remove_bad_node(t_cli *cli);
-t_token *discard_tokens(t_token *tok);
+t_cli	*remove_cli(t_cli *cli);
+t_token	*discard_tokens(t_token *tok);
 t_here	*make_new_heredoc(t_here *head);
 t_here	*get_heredocs(t_token *tok);
-void    free_heredocs(t_here *doc, char closing);
+void	free_heredocs(t_here *doc, char closing);
 int		assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
 
 //remove
-void print_cli(void);
+void	print_cli(void);
 void	print_token(t_token *tokens);
 
 #endif
