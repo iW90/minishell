@@ -6,11 +6,41 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/01 17:34:35 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 15:50:14 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*print_type_tok(t_token *tokens)
+{
+	if (tokens->type == PIPE)
+		return ("pipe");
+	else if (tokens->type == HEREDOC)
+		return ("heredoc");
+	else if (tokens->type == APPEND)
+		return ("append");
+	else if (tokens->type == INPUT)
+		return ("input");
+	else if (tokens->type == OVERWRITE)
+		return ("overwrite");
+	else if (tokens->type == BUILTIN)
+		return ("builtin");
+	else if (tokens->type == EXEC)
+		return ("exec");
+	else if (tokens->type == ARGUMENT)
+		return ("arg");
+	else
+		return ("");
+}
+
+static void	print_tokens(t_token *tokens)
+{
+	if (!tokens)
+		return ;
+	printf("str: %s | type: %s\n", tokens->str, print_type_tok(tokens));
+	print_tokens(tokens->next);
+}
 
 static char	*print_type(int type)
 {
@@ -159,6 +189,9 @@ static int	pipe_chain(t_cli *cli)
 
 static int	set_command_chain(t_cli *cli, t_token *tok)
 {
+	if (get_control()->commands == cli)
+		print_cli();
+	print_tokens(tok);
 	while (1)
 	{
 		cli->type = tok->type;
@@ -175,7 +208,6 @@ static int	set_command_chain(t_cli *cli, t_token *tok)
 			cli = cli->next;
 		}
 	}
-	print_cli();
 	pipe_chain(get_control()->commands);
 	return (1);
 }
@@ -197,5 +229,5 @@ int	assemble_tokens(t_token *tok)
 	get_control()->commands = cli;
 	if (!assemble_fds(cli, tok, heredocs))
 		return (0);
-	return (set_command_chain(cli, tok));
+	return (set_command_chain(get_control()->commands, tok));
 }

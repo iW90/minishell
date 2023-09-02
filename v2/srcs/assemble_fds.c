@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 00:15:04 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:09:57 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,24 @@ static int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
 {
 	t_token	*next;
 	char	*file;
-	int		redirector;
 
 	if (!node || !node->next || !node->next->str)
 		return (-1);
 	next = node->next;
 	file = next->str;
-	redirector = node->type;
-	if (redirector == HEREDOC)
+	if (node->type == HEREDOC)
 		fd[0] = heredocs->fd;
-	else if (redirector == INPUT)
+	else if (node->type == INPUT)
 		fd[0] = open(file, O_RDONLY);
-	else if (redirector == APPEND)
+	else if (node->type == APPEND)
 		fd[1] = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-	else if (redirector == OVERWRITE)
+	else if (node->type == OVERWRITE)
 		fd[1] = open(file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
+	if (fd[0] == -1 || fd[1] == -1)
+		perror(file);
 	remove_token(next);
 	remove_token(node);
-	if (fd[0] == -1 && (redirector == HEREDOC || redirector == INPUT))
-		return (-1);
-	if (fd[1] == -1 && (redirector == APPEND || redirector == OVERWRITE))
+	if (fd[0] == -1 || fd[1] == -1)
 		return (-1);
 	return (0);
 }
@@ -97,6 +95,13 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 			}
 			else
 				get_fd(tok->next, cli->fd, heredocs);
+			if (cli && (cli->fd[0] < 0 || cli->fd[1] < 0))
+			{
+				cli = remove_bad_node(cli);
+				tok = discard_tokens(tok->next);
+				if (!tok)
+					break ;
+			}
 			if (get_control()->status == 130)
 				return (0);
 		}

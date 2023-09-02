@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/08/27 16:28:27 by inwagner         ###   ########.fr        #
+#    Updated: 2023/09/02 14:53:06 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ BCFLAGS		:=	-Wall -Wextra -Werror -g -I ./bonus/incl
 FUN			:=	main.c \
 				assemble_tokens.c \
 				assemble_heredoc.c \
+				assemble_helpers.c \
 				assemble_fds.c \
 				assemble_utils.c \
 				builtin_caller.c \
