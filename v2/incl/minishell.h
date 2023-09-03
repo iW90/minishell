@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/02 21:56:08 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 22:03:11 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ int		has_heredoc(t_token	*tok);
 
 t_cli	*make_new_cli(t_here *head);
 t_cli	*remove_cli(t_cli *cli);
-t_token	*discard_tokens(t_token *tok);
+t_token	*discard_tokens(t_token *token);
 t_here	*make_new_heredoc(t_here *head);
 t_here	*get_heredocs(t_token *tok);
 void	free_heredocs(t_here *doc, char closing);
