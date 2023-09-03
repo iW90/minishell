@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:50:25 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 20:59:48 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:54:08 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,38 +70,29 @@ t_cli	*remove_cli(t_cli *cli)
 	return (next);
 }
 
-t_token *discard_tokens(t_token *tok)
+t_token	*discard_tokens(t_token *token)
 {
-	if (!tok)
-		return NULL;
+	t_token	*stt;
+	t_token	*end;
 
-	t_token *current = tok;
-	t_token *prev_boundary = NULL;
-	t_token *next_boundary = NULL;
-
-	while (current->prev && current->prev->type != PIPE)
-		current = current->prev;
-	prev_boundary = current->prev;
-	current = tok;
-	while (current->next && current->next->type != PIPE)
-		current = current->next;
-	next_boundary = current->next;
-	if (next_boundary && next_boundary->type == PIPE)
-	{
-		t_token *tmp = next_boundary->next;
-		remove_token(next_boundary);
-		next_boundary = tmp;
-	}
-	current = tok;
-	while (current != next_boundary)
-	{
-		t_token *tmp = current->next;
-		remove_token(current);
-		current = tmp;
-	}
-	if (prev_boundary)
-		prev_boundary->next = next_boundary;
-	if (next_boundary)
-		next_boundary->prev = prev_boundary;
-	return next_boundary;
+	if (!token)
+		return (NULL);
+	stt = token;
+	end = token;
+	while (stt && stt->prev && stt->prev->type != PIPE)
+		stt = stt->prev;
+	token = stt;
+	while (end && end->type != PIPE)
+		end = end->next;
+	if (end)
+		end = end->next;
+	if (!stt->prev)
+		get_control->token = end;
+	while (token != end)
+		remove_token(token);
+	if (end)
+		end->prev = stt;
+	if (stt)
+		stt->next = end;
+	return (end);
 }
