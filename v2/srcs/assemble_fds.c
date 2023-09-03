@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assemble_fds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 22:20:14 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 22:40:34 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 				cli = remove_cli(cli);
 				if (cli && cli->type == PIPE)
 					cli = remove_cli(cli);
-				tok = discard_tokens(tok->next);
+				tok = discard_tokens(tok);
 				if (!tok)
 					break ;
 			}
