@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/01 17:34:18 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:04:13 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	print_tokens(t_token *tokens)
 
 static void	fork_command(t_cli *commands)
 {
-	printf("Comming in fork command with fd0: %i and fd1: %i and arg0 = %s\n", commands->fd[0], commands->fd[1], commands->args[0]);
 	if (commands->fd[0] > 0)
 	{
 		if (dup2(commands->fd[0], STDIN_FILENO) < 0)
@@ -77,8 +76,10 @@ static int	mother_forker(t_cli *commands)
 {
 	pid_t	forked;
 	int		wstatus;
+	int		last_command;
 
 	wstatus = 0;
+	last_command = 0;
 	while (commands)
 	{
 		forked = fork();
@@ -92,12 +93,14 @@ static int	mother_forker(t_cli *commands)
 				close(commands->fd[0]);
 			if (commands->fd[1] > 0)
 				close(commands->fd[1]);
-			waitpid(forked, &wstatus, 0);
-			if (WIFEXITED(wstatus))
-				get_control()->status = (WEXITSTATUS(wstatus));
+			if (!commands->next)
+				last_command = 1;
 		}
 		commands = commands->next;
 	}
+	waitpid(forked, &wstatus, 0);
+	if (WIFEXITED(wstatus) && last_command)
+		get_control()->status = (WEXITSTATUS(wstatus));
 	return (wstatus);
 }
 
@@ -147,3 +150,87 @@ void	prompt_user(const char *prompt)
 	}
 	free(control->input);
 }
+
+/*
+
+
+t_token *discard_tokens(t_token *tok)
+{
+	t_token	*start;
+
+	start = tok;
+	while (start && start->prev && start->prev->type != PIPE)
+		start = start->prev;
+
+}
+
+
+t_token *discard_tokens(t_token *tok)
+{
+    if (!tok)
+        return NULL;
+
+    t_token *current = tok;
+    t_token *prev_boundary = NULL;
+    t_token *next_boundary = NULL;
+
+    while (current->prev && current->prev->type != PIPE)
+        current = current->prev;
+    prev_boundary = current->prev;
+    current = tok;
+    while (current->next && current->next->type != PIPE)
+        current = current->next;
+    next_boundary = current->next;
+    if (next_boundary && next_boundary->type == PIPE)
+    {
+        t_token *tmp = next_boundary->next;
+        remove_token(next_boundary);
+        next_boundary = tmp;
+    }
+    current = tok;
+    while (current != next_boundary)
+    {
+        t_token *tmp = current->next;
+        remove_token(current);
+        current = tmp;
+    }
+    if (prev_boundary)
+        prev_boundary->next = next_boundary;
+    if (next_boundary)
+        next_boundary->prev = prev_boundary;
+    return next_boundary;
+}
+
+
+static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
+{
+	while (tok)
+	{
+		if (tok->type <= PIPE)
+		{
+			tok = tok->prev;
+			if (tok->next->type == PIPE)
+			{
+				cli = pipe_fd(cli->next);
+				tok = tok->next->next;
+				if (heredocs && heredocs->next)
+					heredocs = heredocs->next;
+			}
+			else
+				get_fd(tok->next, cli->fd, heredocs);
+			if (cli && (cli->fd[0] < 0 || cli->fd[1] < 0))
+			{
+				cli = remove_bad_node(cli);
+				tok = discard_tokens(tok->next);
+				if (!tok)
+					break ;
+			}
+			if (get_control()->status == 130)
+				return (0);
+		}
+		tok = tok->next;
+	}
+	return (1);
+}
+
+*/

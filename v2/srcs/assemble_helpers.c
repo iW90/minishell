@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assemble_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:50:25 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 20:33:19 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 20:59:48 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_cli	*remove_cli(t_cli *cli)
 	while (temp->next != cli)
 		temp = temp->next;
 	if (get_control()->commands == cli)
-		get_control()->commands == next;
+		get_control()->commands = next;
 	else
 		temp->next = next;
 	clear_node(cli);

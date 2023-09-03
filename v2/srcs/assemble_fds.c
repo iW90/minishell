@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 16:09:57 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:01:02 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 				get_fd(tok->next, cli->fd, heredocs);
 			if (cli && (cli->fd[0] < 0 || cli->fd[1] < 0))
 			{
-				cli = remove_bad_node(cli);
+				cli = remove_cli(cli);
 				tok = discard_tokens(tok->next);
 				if (!tok)
 					break ;
