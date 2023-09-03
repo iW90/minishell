@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 15:50:14 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/03 10:05:52 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static char	*print_type_tok(t_token *tokens)
 {
+	if (!tokens)
+		return ("");
 	if (tokens->type == PIPE)
 		return ("pipe");
 	else if (tokens->type == HEREDOC)
@@ -191,7 +193,8 @@ static int	set_command_chain(t_cli *cli, t_token *tok)
 {
 	if (get_control()->commands == cli)
 		print_cli();
-	print_tokens(tok);
+	if (get_control()->tokens == tok)
+		print_tokens(tok);
 	while (1)
 	{
 		cli->type = tok->type;
