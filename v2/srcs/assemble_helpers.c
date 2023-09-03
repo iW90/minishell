@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:50:25 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 21:28:27 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:32:44 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,6 @@ t_token	*discard_tokens(t_token *token)
 	if (end)
 		end = end->next;
 	if (!stt->prev)
-		get_control->token = end;
-	if (!stt)
 		get_control->token = end;
 	while (token != end)
 		remove_token(token);
