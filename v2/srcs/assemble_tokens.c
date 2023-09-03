@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 13:29:53 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/03 10:05:52 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/03 11:19:21 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*print_type_tok(t_token *tokens)
 		return ("");
 }
 
-static void	print_tokens(t_token *tokens)
+void	print_tokens(t_token *tokens)
 {
 	if (!tokens)
 		return ;
@@ -191,11 +191,7 @@ static int	pipe_chain(t_cli *cli)
 
 static int	set_command_chain(t_cli *cli, t_token *tok)
 {
-	if (get_control()->commands == cli)
-		print_cli();
-	if (get_control()->tokens == tok)
-		print_tokens(tok);
-	while (1)
+	while (cli && tok)
 	{
 		cli->type = tok->type;
 		if (tok->type > PIPE)
@@ -218,19 +214,21 @@ static int	set_command_chain(t_cli *cli, t_token *tok)
 int	assemble_tokens(t_token *tok)
 {
 	t_cli	*cli;
+	t_ctrl	*control;
 	t_here	*heredocs;
 
 	if (!tok)
 		return (0);
 	heredocs = get_heredocs(tok);
-	if (get_control()->status == 130)
+	control = get_control();
+	if (control->status == 130)
 	{
 		free_heredocs(heredocs, 'c');
 		return (0);
 	}
 	cli = make_new_cli(heredocs);
-	get_control()->commands = cli;
+	control->commands = cli;
 	if (!assemble_fds(cli, tok, heredocs))
 		return (0);
-	return (set_command_chain(get_control()->commands, tok));
+	return (set_command_chain(control->commands, control->tokens));
 }

@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/03 10:58:51 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/03 11:09:08 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,10 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 				get_fd(tok->next, cli->fd, heredocs);
 			if (cli && (cli->fd[0] < 0 || cli->fd[1] < 0))
 			{
-				printf("gonna print the clis: \n");
-				print_cli();
 				if (cli->next)
 					remove_cli(cli->next);
 				cli = remove_cli(cli);
-				printf("just removed the first and maybe the second cli, now I'm left with:\n");
-				print_cli();
-				printf("ok so the tokens are here:\n");
-				print_token(tok);
-				printf("done printing tokens\n");
 				tok = discard_tokens(tok);
-				printf("after the removing token part:\n");
-				print_token(tok);
-				printf("gonna print the structure now:\n");
-				print_token(get_control()->tokens);
 				if (!tok)
 					break ;
 			}
