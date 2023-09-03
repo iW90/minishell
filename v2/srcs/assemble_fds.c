@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 21:01:02 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 22:20:14 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 			if (cli && (cli->fd[0] < 0 || cli->fd[1] < 0))
 			{
 				cli = remove_cli(cli);
+				if (cli && cli->type == PIPE)
+					cli = remove_cli(cli);
 				tok = discard_tokens(tok->next);
 				if (!tok)
 					break ;

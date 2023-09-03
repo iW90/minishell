@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assemble_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:50:25 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 22:00:49 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 22:09:43 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_cli	*remove_cli(t_cli *cli)
 		return (NULL);
 	temp = get_control()->commands;
 	next = cli->next;
-	while (temp->next != cli)
+	while (temp && temp->next != cli)
 		temp = temp->next;
 	if (get_control()->commands == cli)
 		get_control()->commands = next;
@@ -87,7 +87,7 @@ t_token	*discard_tokens(t_token *token)
 	if (end)
 		end = end->next;
 	if (!stt->prev)
-		get_control->token = end;
+		get_control()->tokens = end;
 	while (token != end)
 		token = remove_token(token);
 	if (end)
