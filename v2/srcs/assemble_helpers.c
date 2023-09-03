@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assemble_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:50:25 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 21:54:08 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 22:00:49 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_token	*discard_tokens(t_token *token)
 	if (!stt->prev)
 		get_control->token = end;
 	while (token != end)
-		remove_token(token);
+		token = remove_token(token);
 	if (end)
 		end->prev = stt;
 	if (stt)

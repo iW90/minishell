@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/02 20:35:42 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:56:08 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ t_env	*validate_if_var_exist(t_env *list, char *arg);
 
 int		assemble_tokens(t_token *tok_nav);
 
-void	remove_token(t_token *node);
+t_token	*remove_token(t_token *node);
 int		count_args(t_token *node);
 int		count_nodes(t_token *tok);
 int		has_heredoc(t_token	*tok);

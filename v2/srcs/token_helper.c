@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:34:31 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 11:15:47 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/02 21:55:22 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*copy_str(char *input, int start, int len)
 	return (str);
 }
 
-void	remove_token(t_token *node)
+t_token	*remove_token(t_token *node)
 {
 	t_token	*prev;
 	t_token	*next;
@@ -72,4 +72,5 @@ void	remove_token(t_token *node)
 		next->prev = prev;
 	if (!prev && !next)
 		get_control()->tokens = NULL;
+	return (next);
 }
