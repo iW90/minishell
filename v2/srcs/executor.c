@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:22:50 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/05 13:59:55 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 18:02:20 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,7 @@ static void	fork_command(t_cli *commands)
 			exit_program(-1);
 		close(commands->fd[1]);
 	}
-	if (commands->type == BUILTIN)
-		call_builtin(commands);
-	else if (commands->type == EXEC)
-		call_execve(commands->args, get_control()->env);
-	else
-	{
-		ft_putstr_fd("Command ", STDERR_FILENO);
-		if (commands->args)
-			ft_putstr_fd(commands->args[0], STDERR_FILENO);
-		ft_putstr_fd(" not found\n", STDERR_FILENO);
-		get_control()->status = 127;
-	}
+	execute_a_command(commands);
 	exit_program(0);
 }
 
@@ -64,12 +53,9 @@ static void	wait_last_command(pid_t forked, int *wstatus)
 
 static int	mother_forker(t_cli *commands)
 {
-	pid_t	*forks;
-	int		fork_amount;
 	int		wstatus;
 
 	wstatus = 0;
-	fork_amount = count_commands(commands);
 	set_signals(INACTIVE);
 	while (commands)
 	{
@@ -89,18 +75,12 @@ static int	mother_forker(t_cli *commands)
 		}
 		commands = commands->next;
 	}
+	set_signals(ACTIVE);
 	return (wstatus);
 }
 
-int	run_commands(void)
+static void	execute_a_command(t_cli *commands)
 {
-	t_cli	*commands;
-
-	commands = get_control()->commands;
-	if (!commands)
-		return (0);
-	if (commands->next || commands->fd[0] || commands->fd[1])
-		return (mother_forker(commands));
 	if (commands->type == BUILTIN)
 		call_builtin(commands);
 	else if (commands->type == EXEC)
@@ -113,5 +93,26 @@ int	run_commands(void)
 		ft_putstr_fd(" not found\n", STDERR_FILENO);
 		get_control()->status = 127;
 	}
+}
+
+int	run_commands(void)
+{
+	t_cli	*commands;
+	pid_t	*forks;
+	int		amount;
+
+	commands = get_control()->commands;
+	if (!commands)
+		return (0);
+	if (commands->next || commands->fd[0] || commands->fd[1])
+	{
+		amount = count_commands(commands);
+		forks = malloc(sizeof(pidt) * amount);
+		if (!forks)
+			exit_program(OUT_OF_MEMORY);
+		mother_forker(commands, forks, amount);
+	}
+	else
+		execute_a_command(commands);
 	return (1);
 }
