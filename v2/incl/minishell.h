@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/02 22:03:11 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/05 12:23:15 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,7 @@ t_here	*get_heredocs(t_token *tok);
 void	free_heredocs(t_here *doc, char closing);
 int		assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
 
+int	run_commands(void);
 //remove
 void	print_cli(void);
 void	print_token(t_token *tokens);

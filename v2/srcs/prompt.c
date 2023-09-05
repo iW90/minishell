@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/02 21:04:13 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 12:22:44 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,91 +42,6 @@ static void	print_tokens(t_token *tokens)
 	print_tokens(tokens->next);
 }
 */
-
-static void	fork_command(t_cli *commands)
-{
-	if (commands->fd[0] > 0)
-	{
-		if (dup2(commands->fd[0], STDIN_FILENO) < 0)
-			exit_program(-1);
-		close(commands->fd[0]);
-	}
-	if (commands->fd[1])
-	{
-		if (dup2(commands->fd[1], STDOUT_FILENO) < 0)
-			exit_program(-1);
-		close(commands->fd[1]);
-	}
-	if (commands->type == BUILTIN)
-		call_builtin(commands);
-	else if (commands->type == EXEC)
-		call_execve(commands->args, get_control()->env);
-	else
-	{
-		ft_putstr_fd("Command ", STDERR_FILENO);
-		if (commands->args)
-			ft_putstr_fd(commands->args[0], STDERR_FILENO);
-		ft_putstr_fd(" not found\n", STDERR_FILENO);
-		get_control()->status = 127;
-	}
-	exit_program(0);
-}
-
-static int	mother_forker(t_cli *commands)
-{
-	pid_t	forked;
-	int		wstatus;
-	int		last_command;
-
-	wstatus = 0;
-	last_command = 0;
-	while (commands)
-	{
-		forked = fork();
-		if (!forked)
-			fork_command(commands);
-		if (forked < 0)
-			return (-1);
-		else
-		{
-			if (commands->fd[0] > 0)
-				close(commands->fd[0]);
-			if (commands->fd[1] > 0)
-				close(commands->fd[1]);
-			if (!commands->next)
-				last_command = 1;
-		}
-		commands = commands->next;
-	}
-	waitpid(forked, &wstatus, 0);
-	if (WIFEXITED(wstatus) && last_command)
-		get_control()->status = (WEXITSTATUS(wstatus));
-	return (wstatus);
-}
-
-int	run_commands(void)
-{
-	t_cli	*commands;
-
-	commands = get_control()->commands;
-	if (!commands)
-		return (0);
-	if (commands->next || commands->fd[0] || commands->fd[1])
-		return (mother_forker(commands));
-	if (commands->type == BUILTIN)
-		call_builtin(commands);
-	else if (commands->type == EXEC)
-		call_execve(commands->args, get_control()->env);
-	else
-	{
-		ft_putstr_fd("Command ", STDERR_FILENO);
-		if (commands->args)
-			ft_putstr_fd(commands->args[0], STDERR_FILENO);
-		ft_putstr_fd(" not found\n", STDERR_FILENO);
-		get_control()->status = 127;
-	}
-	return (1);
-}
 
 void	prompt_user(const char *prompt)
 {
