@@ -6,26 +6,13 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:22:50 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/05 18:02:20 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:22:33 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_commands(t_cli *commands)
-{
-	int	i;
-
-	i = 0;
-	while (commands)
-	{
-		i++;
-		commands = commands->next;
-	}
-	return (i);
-}
-
-static void	fork_command(t_cli *commands)
+static void	fork_command(t_cli *commands, pid_t *forked)
 {
 	if (commands->fd[0] > 0)
 	{
@@ -39,30 +26,37 @@ static void	fork_command(t_cli *commands)
 			exit_program(-1);
 		close(commands->fd[1]);
 	}
+	free(forked);
 	execute_a_command(commands);
 	exit_program(0);
 }
 
-static void	wait_last_command(pid_t forked, int *wstatus)
+static void	wait_commands(pid_t *forked, int amount)
 {
-	waitpid(forked, wstatus, 0);
-	if (WIFEXITED(*wstatus))
-		get_control()->status = (WEXITSTATUS(*wstatus));
-	set_signals(ACTIVE);
+	int	i;
+	int	wstatus;
+
+	i = 0;
+	while (i < amount)
+	{
+		waitpid(forked[i], &wstatus, 0);
+		if (WIFEXITED(wstatus) && i == (amount - 1))
+			get_control()->status = WEXITSTATUS(wstatus);
+		i++;
+	}
 }
 
-static int	mother_forker(t_cli *commands)
+int	mother_forker(t_cli *commands, pid_t *forked, int amount)
 {
-	int		wstatus;
+	int		i;
 
-	wstatus = 0;
-	set_signals(INACTIVE);
+	i = 0;
 	while (commands)
 	{
-		forked = fork();
-		if (!forked)
-			fork_command(commands);
-		if (forked < 0)
+		forked[i] = fork();
+		if (!forked[i])
+			fork_command(commands, forked);
+		if (forked[i] < 0)
 			return (-1);
 		else
 		{
@@ -70,16 +64,15 @@ static int	mother_forker(t_cli *commands)
 				close(commands->fd[0]);
 			if (commands->fd[1] > 0)
 				close(commands->fd[1]);
-			if (!commands->next)
-				wait_last_command(forked, &wstatus);
+			wait_commands(forked, amount);
 		}
 		commands = commands->next;
+		i++;
 	}
-	set_signals(ACTIVE);
-	return (wstatus);
+	return (i);
 }
 
-static void	execute_a_command(t_cli *commands)
+void	execute_a_command(t_cli *commands)
 {
 	if (commands->type == BUILTIN)
 		call_builtin(commands);
@@ -93,26 +86,4 @@ static void	execute_a_command(t_cli *commands)
 		ft_putstr_fd(" not found\n", STDERR_FILENO);
 		get_control()->status = 127;
 	}
-}
-
-int	run_commands(void)
-{
-	t_cli	*commands;
-	pid_t	*forks;
-	int		amount;
-
-	commands = get_control()->commands;
-	if (!commands)
-		return (0);
-	if (commands->next || commands->fd[0] || commands->fd[1])
-	{
-		amount = count_commands(commands);
-		forks = malloc(sizeof(pidt) * amount);
-		if (!forks)
-			exit_program(OUT_OF_MEMORY);
-		mother_forker(commands, forks, amount);
-	}
-	else
-		execute_a_command(commands);
-	return (1);
 }

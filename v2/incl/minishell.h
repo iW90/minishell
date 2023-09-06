@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/05 12:23:15 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:22:09 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,8 @@ void	free_heredocs(t_here *doc, char closing);
 int		assemble_fds(t_cli *cli, t_token *tok, t_here *heredocs);
 
 int	run_commands(void);
+int	mother_forker(t_cli *commands, pid_t *forked, int amount);
+void	execute_a_command(t_cli *commands);
 //remove
 void	print_cli(void);
 void	print_token(t_token *tokens);
