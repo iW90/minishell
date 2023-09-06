@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:40:38 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 22:15:57 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
 					remove_cli(cli->next);
 				cli = remove_cli(cli);
 				tok = discard_tokens(tok);
+				get_control()->status = 1;
 				if (!tok)
 					break ;
 			}

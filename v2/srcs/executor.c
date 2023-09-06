@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:22:50 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:26:24 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 22:43:24 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	execute_a_command(t_cli *commands)
 		if (commands->args)
 			ft_putstr_fd(commands->args[0], STDERR_FILENO);
 		ft_putstr_fd(" not found\n", STDERR_FILENO);
+		if (get_control()->status == 126)	
+			return ;
 		get_control()->status = 127;
 	}
 }
