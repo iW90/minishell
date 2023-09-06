@@ -6,24 +6,11 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:27:33 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/03 11:09:08 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:40:38 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static t_cli	*pipe_fd(t_cli *cli)
-{
-	if (!cli)
-		return (NULL);
-	cli->type = PIPE;
-	if (pipe(cli->fd) < 0)
-	{
-		cli->fd[0] = -1;
-		cli->fd[1] = -1;
-	}
-	return (cli->next);
-}
 
 /*
 **	Makes sure the t_cli node has it's input and

@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 12:22:50 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/05 21:22:33 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:26:24 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ int	mother_forker(t_cli *commands, pid_t *forked, int amount)
 				close(commands->fd[0]);
 			if (commands->fd[1] > 0)
 				close(commands->fd[1]);
-			wait_commands(forked, amount);
 		}
 		commands = commands->next;
 		i++;
 	}
+	wait_commands(forked, amount);
 	return (i);
 }
 

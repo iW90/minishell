@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 20:49:48 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/02 15:16:58 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/05 21:29:10 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,17 @@ void	free_heredocs(t_here *doc, char closing)
 	if (closing)
 		close(doc->fd);
 	free(doc);
+}
+
+t_cli	*pipe_fd(t_cli *cli)
+{
+	if (!cli)
+		return (NULL);
+	cli->type = PIPE;
+	if (pipe(cli->fd) < 0)
+	{
+		cli->fd[0] = -1;
+		cli->fd[1] = -1;
+	}
+	return (cli->next);
 }
