@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_utils.c                                      :+:      :+:    :+:   */
+/*   executor_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/21 22:20:34 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 09:37:14 by inwagner         ###   ########.fr       */
+/*   Created: 2023/08/15 20:49:48 by maalexan          #+#    #+#             */
+/*   Updated: 2023/09/08 10:30:59 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_bracket(char c)
+int	has_heredoc(t_token	*tok)
 {
-	return (c == '>' || c == '<');
+	while (tok)
+	{
+		if (tok->type == HEREDOC)
+			return (1);
+		tok = tok->next;
+	}
+	return (0);
 }
 
-int	is_pipe(char c)
+void	free_heredocs(t_here *doc, char closing)
 {
-	return (c == '|');
+	if (!doc)
+		return ;
+	free_heredocs(doc->next, closing);
+	if (closing)
+		close(doc->fd);
+	free(doc);
 }

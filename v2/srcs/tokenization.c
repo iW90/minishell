@@ -6,52 +6,13 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 21:43:06 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/13 00:27:40 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:17:40 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*set_quoted_token(char *input, t_token *token, int *i)
-{
-	int		start;
-	int		end;
-	int		len;
-
-	if (input[*i] != '"')
-		token->quote = SINGLE;
-	else
-		token->quote = DOUBLE;
-	start = *i + 1;
-	get_quote(input, i);
-	end = (*i)++;
-	len = end - start + 1;
-	token->str = malloc(sizeof(char) * len);
-	if (!token->str)
-		exit_program(OUT_OF_MEMORY);
-	ft_strlcpy(token->str, &input[start], len);
-	return (token);
-}
-
-t_token	*set_unquoted_token(char *input, t_token *token, int *i)
-{
-	int		start;
-	int		end;
-	int		len;
-
-	start = *i;
-	while (input[*i] && !ft_isblank(input[*i]))
-		(*i)++;
-	end = *i;
-	len = end - start + 1;
-	token->str = malloc(sizeof(char) * len);
-	if (!token->str)
-		exit_program(OUT_OF_MEMORY);
-	ft_strlcpy(token->str, &input[start], len);
-	return (token);
-}
-
-t_token	*get_token(char *input, int *i)
+static t_token	*get_token(char *input, int *i)
 {
 	t_token	*new;
 
@@ -63,20 +24,13 @@ t_token	*get_token(char *input, int *i)
 	if (!new)
 		exit_program(OUT_OF_MEMORY);
 	*new = (t_token){0};
-	if (is_quote(input[*i]))
-		return (set_quoted_token(input, new, i));
+	if (is_pipe(input[*i]))
+		new->str = set_pipe_token(input, i, new);
+	else if (is_bracket(input[*i]))
+		new->str = set_redirector_token(input, i, new);
 	else
-		return (set_unquoted_token(input, new, i));
-}
-
-void	link_token(t_token *new, t_token *last)
-{
-	if (!new || !last)
-		return ;
-	while (last->next)
-		last = last->next;
-	last->next = new;
-	new->prev = last;
+		new->str = set_str_token(input, i);
+	return (new);
 }
 
 int	tokenization(char *input)
@@ -97,5 +51,6 @@ int	tokenization(char *input)
 		current = get_token(input, &i);
 		link_token(current, control->tokens);
 	}
+	parser();
 	return (0);
 }

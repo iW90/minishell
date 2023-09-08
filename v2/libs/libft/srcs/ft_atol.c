@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_utils.c                                      :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/21 22:20:34 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 09:37:14 by inwagner         ###   ########.fr       */
+/*   Created: 2023/09/08 11:57:42 by inwagner          #+#    #+#             */
+/*   Updated: 2023/09/08 11:58:55 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	is_bracket(char c)
+long	ft_atol(const char *str)
 {
-	return (c == '>' || c == '<');
-}
+	long	n;
+	int		neg;
 
-int	is_pipe(char c)
-{
-	return (c == '|');
+	n = 0;
+	neg = 0;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '-')
+		neg = 1;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (ft_isdigit(*str))
+		n = 10 * n - (*str++ - '0');
+	if (neg)
+		return (n);
+	return (-n);
 }

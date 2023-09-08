@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_finder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:08:04 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/20 22:37:47 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/08 11:35:07 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,15 @@ static char	*check_exec(char *path, char *cmd, int path_len, int cmd_len)
 	char		*str;
 	struct stat	file_status;
 
-	str = NULL;
 	str = get_full_path(path, cmd, path_len, cmd_len);
-	if (stat(str, &file_status) || \
-		!S_ISREG(file_status.st_mode) || \
-		access(str, X_OK))
+	if (stat(str, &file_status) == 0)
 	{
-		free(str);
-		str = NULL;
+		if (S_ISREG(file_status.st_mode) && access(str, X_OK) == 0)
+			return (str);
+		get_control()->status = 126;
 	}
-	return (str);
+	free(str);
+	return (NULL);
 }
 
 /*	SEARCH BY PATH
