@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:10:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 17:09:54 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/07 21:44:35 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	change_directory(const char *path)
 	else
 	{
 		free(old_pwd);
-		ft_putstr_fd("cd: cannot change directory\n", STDERR_FILENO);
+		perror("cd: ");
 		return (1);
 	}
 }

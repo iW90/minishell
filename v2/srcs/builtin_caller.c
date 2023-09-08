@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 19:34:20 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 17:24:11 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/07 21:41:19 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void	call_builtin(t_cli *cli)
 	else if (!ft_strcmp(builtin, "env"))
 		ctrl->status = b_env(args, ctrl->env);
 	else if (!ft_strcmp(builtin, "exit"))
-		b_exit(args);
+		ctrl->status = b_exit(args);
 }
