@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:38:31 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 11:38:27 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:47:38 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	validate_pipe(char *input, int *i)
 	(*i)++;
 	while (input[*i] && ft_isblank(input[*i]))
 		(*i)++;
-	if (is_pipe(input[*i])) //|| is_bracket(input[*i]))
+	if (is_pipe(input[*i]))
 		return (print_error("syntax error near unexpected token `", \
 				NULL, input[*i]));
 	(*i)--;

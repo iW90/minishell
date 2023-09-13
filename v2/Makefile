@@ -6,7 +6,7 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/09/12 22:16:00 by maalexan         ###   ########.fr        #
+#    Updated: 2023/09/13 11:48:17 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,8 +62,7 @@ FUN			:=	main.c \
 				token_populator.c \
 				token_string_handler.c \
 				token_utils.c \
-				tokenization.c \
-				t_printers.c
+				tokenization.c
 
 # Object files
 OBJ			:=	$(FUN:%.c=$(OBJ_DIR)/%.o)
