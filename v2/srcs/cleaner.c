@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 10:25:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/08/26 17:55:49 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/12 20:21:41 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,19 @@ static void	clear_env(t_env *list)
 
 void	clear_cli(t_cli *cli)
 {
+	t_cli	*next_cli;
+
 	if (!cli)
 		return ;
-	clear_cli(cli->next);
+	next_cli = cli->next;
 	if (cli->args)
 		clear_pbox(cli->args);
-	if (cli->fd[0])
+	if (cli->fd[0] > 0)
 		close(cli->fd[0]);
-	if (cli->fd[1])
+	if (cli->fd[1] > 0)
 		close(cli->fd[1]);
 	free(cli);
+	clear_cli(next_cli);
 }
 
 void	exit_program(int code)

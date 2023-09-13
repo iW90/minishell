@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_fork.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:55 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 11:36:13 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/12 21:47:16 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ static void	fork_command(t_cli *commands, pid_t *forked)
 	if (commands->fd[0] > 0)
 	{
 		if (dup2(commands->fd[0], STDIN_FILENO) < 0)
-			exit_program(-1);
+		{
+			free(forked);
+			exit_program(1);
+		}
 		close(commands->fd[0]);
 	}
 	if (commands->fd[1])
 	{
 		if (dup2(commands->fd[1], STDOUT_FILENO) < 0)
-			exit_program(-1);
+		{
+			free(forked);
+			exit_program(1);
+		}
 		close(commands->fd[1]);
 	}
 	free(forked);
@@ -70,22 +76,4 @@ int	mother_forker(t_cli *commands, pid_t *forked, int amount)
 	}
 	wait_commands(forked, amount);
 	return (i);
-}
-
-void	execute_a_command(t_cli *commands)
-{
-	if (commands->type == BUILTIN)
-		call_builtin(commands);
-	else if (commands->type == EXEC)
-		call_execve(commands->args, get_control()->env);
-	else
-	{
-		ft_putstr_fd("Command ", STDERR_FILENO);
-		if (commands->args)
-			ft_putstr_fd(commands->args[0], STDERR_FILENO);
-		ft_putstr_fd(" not found\n", STDERR_FILENO);
-		if (get_control()->status == 126)
-			return ;
-		get_control()->status = 127;
-	}
 }

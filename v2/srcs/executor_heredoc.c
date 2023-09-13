@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/08 10:10:05 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/12 20:15:22 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,48 +17,36 @@
 **	receive the user's input and writes
 **	it to an fd while it's open
 */
-static void	here_doc(char *delim, char *line, int *fd)
+static void	here_doc(char *delim, int *fd)
 {
+	char	*line;
 	int		written[2];
 
+	set_signals(HEREDOC);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line || !ft_strncmp(delim, line, ft_strlen(delim) + 1))
+		{
+			free(line);
 			break ;
+		}
 		written[0] = write(fd[1], line, ft_strlen(line));
 		written[1] = write(fd[1], "\n", 1);
 		free(line);
 		if (written[0] < 0 || written[1] < 0)
+		{
+			perror("heredoc fd");
 			break ;
+		}
 	}
+	close(fd[0]);
+	close(fd[1]);
 	exit_program(0);
 }
 
-static void	prepare_here_doc(char *delim, int *fd, t_here *head)
+static int	fork_heredoc(char *delim, int *fd)
 {
-	t_cli	*cli;
-
-	free_heredocs(head, 0);
-	cli = malloc(sizeof(t_cli));
-	if (!cli)
-		exit_program(OUT_OF_MEMORY);
-	*cli = (t_cli){0};
-	cli->args = malloc(sizeof(char *) * 2);
-	if (!cli->args)
-		exit_program(OUT_OF_MEMORY);
-	cli->args[0] = NULL;
-	cli->args[1] = NULL;
-	cli->fd[0] = fd[0];
-	cli->fd[1] = fd[1];
-	get_control()->commands = cli;
-	set_signals(HEREDOC);
-	here_doc(delim, cli->args[0], cli->fd);
-}
-
-static int	fork_heredoc(char *delim, t_here *head)
-{
-	int		fd[2];
 	int		wstatus;
 	pid_t	forked;
 
@@ -68,9 +56,9 @@ static int	fork_heredoc(char *delim, t_here *head)
 	set_signals(INACTIVE);
 	forked = fork();
 	if (!forked)
-		prepare_here_doc(delim, fd, head);
+		here_doc(delim, fd);
 	if (forked < 0)
-		ft_putstr_fd("Failed to create child process\n", STDERR_FILENO);
+		perror("fork");
 	else
 	{
 		waitpid(forked, &wstatus, 0);
@@ -82,31 +70,40 @@ static int	fork_heredoc(char *delim, t_here *head)
 	return (fd[0]);
 }
 
-t_here	*get_heredocs(t_token *tok)
+static int	validate_hdoc(int fd)
 {
-	t_here	*start;
-	t_here	*cursor;
-
-	if (!has_heredoc(tok))
-		return (NULL);
-	start = add_heredoc(NULL);
-	cursor = start;
-	while (tok)
+	if (fd < 0)
 	{
-		if (tok->type == HEREDOC && tok->next)
-		{
-			if (cursor->fd)
-				close(cursor->fd);
-			cursor->fd = fork_heredoc(tok->next->str, start);
-			if (get_control()->status == 130)
-				return (start);
-		}
-		else if (tok->type == PIPE && has_heredoc(tok))
-		{
-			cursor->next = add_heredoc(start);
-			cursor = cursor->next;
-		}
-		tok = tok->next;
+		perror("fd");
+		return (0);
 	}
-	return (start);
+	if (get_control()->status == 130)
+		return (0);
+	return (1);
+}
+
+int	get_heredoc(t_token *tok, t_cli *cli)
+{
+	if (!tok || !cli)
+		return (0);
+	while (cli)
+	{
+		while (tok && tok->type != HEREDOC && tok->type != PIPE)
+			tok = tok->next;
+		if (!tok || tok->type == PIPE)
+			cli = cli->next;
+		else if (tok->type == HEREDOC && tok->next)
+		{
+			if (cli->hdoc > 0)
+				close(cli->hdoc);
+			cli->hdoc = fork_heredoc(tok->next->str, cli->fd);
+			cli->fd[0] = 0;
+			cli->fd[1] = 0;
+			if (!validate_hdoc(cli->hdoc))
+				return (0);
+		}
+		if (tok)
+			tok = tok->next;
+	}
+	return (1);
 }

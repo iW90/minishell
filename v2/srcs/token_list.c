@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:49:59 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 11:35:58 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:10:12 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,6 @@ t_token	*remove_token(t_token *node)
 	return (next);
 }
 
-/*
-static t_token	*get_token_stt(t_token *token, t_token *end)
-{
-	t_token	*stt;
-
-	stt = token;
-	while (stt && stt->prev && stt->prev->type != PIPE)
-		stt = stt->prev;
-	if (!end && stt->prev->type == PIPE)
-		stt = stt->prev;
-	return (stt);
-}
-
 static t_token	*get_token_end(t_token *token)
 {
 	t_token	*end;
@@ -68,6 +55,16 @@ static t_token	*get_token_end(t_token *token)
 	return (end);
 }
 
+static t_token	*get_token_stt(t_token *token)
+{
+	t_token	*stt;
+
+	stt = token;
+	while (stt && stt->prev && stt->prev->type != PIPE)
+		stt = stt->prev;
+	return (stt);
+}
+
 t_token	*discard_tokens(t_token *token)
 {
 	t_token	*stt;
@@ -76,37 +73,8 @@ t_token	*discard_tokens(t_token *token)
 	if (!token)
 		return (NULL);
 	end = get_token_end(token);
-	stt = get_token_stt(token, end);
+	stt = get_token_stt(token);
 	token = stt;
-	if (!stt->prev)
-		get_control()->tokens = end;
-	stt = stt->prev;
-	while (token != end)
-		token = remove_token(token);
-	if (end)
-		end->prev = stt;
-	if (stt)
-		stt->next = end;
-	return (end);
-}
-*/
-
-t_token	*discard_tokens(t_token *token)
-{
-	t_token	*stt;
-	t_token	*end;
-
-	if (!token)
-		return (NULL);
-	stt = token;
-	end = token;
-	while (stt && stt->prev && stt->prev->type != PIPE)
-		stt = stt->prev;
-	token = stt;
-	while (end && end->type != PIPE)
-		end = end->next;
-	if (end)
-		end = end->next;
 	if (!stt->prev)
 		get_control()->tokens = end;
 	stt = stt->prev;

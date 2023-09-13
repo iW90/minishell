@@ -3,14 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:31:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 09:31:39 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/12 21:48:26 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	execute_a_command(t_cli *commands)
+{
+	if (!commands)
+		return ;
+	if (commands->fd[0] < 0 || commands->fd[1] < 0)
+	{
+		get_control()->status = 1;
+		return ;
+	}
+	if (commands->type == BUILTIN)
+		call_builtin(commands);
+	else if (commands->type == EXEC)
+		call_execve(commands->args, get_control()->env);
+	else
+	{
+		ft_putstr_fd(" command not found\n", STDERR_FILENO);
+		if (get_control()->status == 126)
+			return ;
+		get_control()->status = 127;
+	}
+}
 
 static int	count_commands(t_cli *commands)
 {
@@ -34,7 +56,7 @@ int	run_commands(void)
 	commands = get_control()->commands;
 	if (!commands)
 		return (0);
-	if (commands->next || commands->fd[0] || commands->fd[1])
+	if (commands->next || commands->fd[0] > 0 || commands->fd[1] > 0)
 	{
 		amount = count_commands(commands);
 		forks = malloc(sizeof(pid_t) * amount);

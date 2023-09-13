@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 19:58:43 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 10:12:31 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/12 16:51:38 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	prompt_user(const char *prompt)
 		parser();
 		if (executor_constructor(control->tokens))
 			run_commands();
+		clear_tokens(control->tokens);
 		control->tokens = NULL;
 		clear_cli(control->commands);
 		control->commands = NULL;

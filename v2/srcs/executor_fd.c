@@ -3,112 +3,107 @@
 /*                                                        :::      ::::::::   */
 /*   executor_fd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 11:33:49 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/12 21:24:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cli	*pipe_fd(t_cli *cli)
+static t_token	*get_next_tok(t_token *tok)
 {
-	if (!cli)
+	t_token	*temp;
+
+	if (!tok)
 		return (NULL);
-	cli->type = PIPE;
-	if (pipe(cli->fd) < 0)
-	{
-		cli->fd[0] = -1;
-		cli->fd[1] = -1;
-	}
-	return (cli->next);
+	if (!tok->prev && tok->next)
+		temp = tok->next->next;
+	else
+		temp = tok->prev;
+	remove_token(tok->next);
+	remove_token(tok);
+	tok = temp;
+	while (temp && temp->prev)
+		temp = temp->prev;
+	if (temp)
+		get_control()->tokens = temp;
+	return (tok);
 }
 
-/*
-**	Makes sure the t_cli node has it's input and
-**	output file descriptor properly set
-*/
-static int	prepare_fd(t_token *node, int *fd, t_here *heredocs)
+static int	treat_fd(t_token *tok, int *fd, int heredoc)
 {
 	t_token	*next;
 	char	*file;
 
-	if (!node || !node->next || !node->next->str)
+	if (!tok || !tok->next || !tok->next->str)
 		return (-1);
-	next = node->next;
+	next = tok->next;
 	file = next->str;
-	if (node->type == HEREDOC)
-		fd[0] = heredocs->fd;
-	else if (node->type == INPUT)
+	if (tok->type == HEREDOC)
+		fd[0] = heredoc;
+	else if (tok->type == INPUT)
 		fd[0] = open(file, O_RDONLY);
-	else if (node->type == APPEND)
+	else if (tok->type == APPEND)
 		fd[1] = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-	else if (node->type == OVERWRITE)
+	else if (tok->type == OVERWRITE)
 		fd[1] = open(file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 	if (fd[0] == -1 || fd[1] == -1)
+	{
 		perror(file);
-	remove_token(next);
-	remove_token(node);
-	if (fd[0] == -1 || fd[1] == -1)
 		return (-1);
+	}
 	return (0);
 }
 
-static void	get_fd(t_token *tok, int *fd, t_here *heredocs)
+static t_cli	*define_final_fd(t_cli *cli)
 {
-	int		redirector;
+	if (!cli)
+		return (NULL);
+	if (cli->hdoc > 0 && cli->fd[0] != cli->hdoc)
+		close(cli->hdoc);
+	cli->hdoc = 0;
+	return (cli->next);
+}
 
-	redirector = tok->type;
-	if (fd[0] > 0 && (redirector == INPUT))
+static void	close_unused_fd(int *fd, int heredoc, t_type type)
+{
+	if (type == APPEND || type == OVERWRITE)
 	{
-		close(fd[0]);
-		fd[0] = 0;
+		if (fd[1] > 0)
+		{
+			close(fd[1]);
+			fd[1] = 0;
+		}
 	}
-	if (fd[1] > 0 && (redirector == APPEND || redirector == OVERWRITE))
+	if (type == INPUT || type == HEREDOC)
 	{
-		close(fd[1]);
-		fd[1] = 0;
-	}
-	if (prepare_fd(tok, fd, heredocs) < 0)
-	{
-		if ((redirector == INPUT || redirector == HEREDOC))
-			fd[0] = -1;
-		if ((redirector == APPEND || redirector == OVERWRITE))
-			fd[1] = -1;
+		if (fd[0] > 0)
+		{
+			if (fd[0] != heredoc)
+				close(fd[0]);
+			fd[0] = 0;
+		}
 	}
 }
 
-int	assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs)
+void	set_fd(t_token *tok, t_cli *cli)
 {
-	while (tok)
+	while (cli)
 	{
-		if (tok->type <= PIPE)
+		while (tok && tok->type > PIPE)
+			tok = tok->next;
+		if (!tok || tok->type == PIPE)
+			cli = define_final_fd(cli);
+		else if (tok->type < PIPE)
 		{
-			tok = tok->prev;
-			if (tok->next->type == PIPE)
-			{
-				cli = pipe_fd(cli->next);
-				tok = tok->next->next;
-				if (heredocs && heredocs->next)
-					heredocs = heredocs->next;
-			}
-			else
-				get_fd(tok->next, cli->fd, heredocs);
-			if (cli && (cli->fd[0] < 0 || cli->fd[1] < 0))
-			{
-				if (cli->next)
-					remove_cli(cli->next);
-				cli = remove_cli(cli);
-				tok = discard_tokens(tok);
-				get_control()->status = 1;
-				if (!tok)
-					break ;
-			}
-			if (get_control()->status == 130)
-				return (0);
+			close_unused_fd(cli->fd, cli->hdoc, tok->type);
+			if (cli->fd[0] != -1 && cli->fd[1] != -1)
+				treat_fd(tok, cli->fd, cli->hdoc);
+			tok = get_next_tok(tok);
 		}
-		tok = tok->next;
+		if (tok)
+			tok = tok->next;
 	}
-	return (1);
 }

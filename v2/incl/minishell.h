@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 11:36:41 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/12 20:59:55 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 # include <sys/stat.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-
 
 # define OUT_OF_MEMORY 12
 # define DEFAULT 0
@@ -62,12 +61,6 @@ typedef enum e_type
 	ARGUMENT
 }	t_type;
 
-enum e_quote
-{
-	SINGLE = 1,
-	DOUBLE
-};
-
 /*	Lists
 */
 typedef struct s_env
@@ -97,6 +90,7 @@ typedef struct s_cli
 {
 	char			**args;
 	int				fd[2];
+	int				hdoc;
 	enum e_type		type;
 	struct s_cli	*next;
 }					t_cli;
@@ -180,22 +174,24 @@ t_env	*validate_if_var_exist(t_env *list, char *arg);
 
 int		executor_constructor(t_token *tok);
 int		assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs);
-int		set_cli(t_cli *cli, t_token *tok);
+int	set_cli(t_token *tok, t_cli *cli);
+int	get_heredoc(t_token *tok, t_cli *cli);
 
 t_token	*remove_token(t_token *node);
-int		has_heredoc(t_token	*tok);
 
 t_cli	*add_cli(t_here *head);
 t_cli	*remove_cli(t_cli *cli);
 t_token	*discard_tokens(t_token *token);
 t_here	*add_heredoc(t_here *head);
 t_here	*get_heredocs(t_token *tok);
-void	free_heredocs(t_here *doc, char closing);
+int		free_heredocs(t_here *doc, char closing);
+//void	remove_invalid_cli(t_cli *cli);
 
 int		run_commands(void);
 int		mother_forker(t_cli *commands, pid_t *forked, int amount);
 void	execute_a_command(t_cli *commands);
 void	create_cli_list(t_token *tok, t_here *heredocs);
+void	set_fd(t_token *tok, t_cli *cli);
 
 //remove
 void	print_cli(void);
