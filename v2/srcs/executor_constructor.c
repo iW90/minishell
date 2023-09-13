@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:40 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 09:57:33 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:06:04 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	set_pipes(t_cli *cli)
 				return (-1);
 			}
 			else
-			pipe_fd(&next->fd[0], &cli->fd[1], fd);
+				pipe_fd(&next->fd[0], &cli->fd[1], fd);
 		}
 		cli = next;
 		next = next->next;
