@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:33 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/12 20:13:07 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 11:43:28 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ int	set_cli(t_token *tok, t_cli *cli)
 		if (tok->type == PIPE)
 		{
 			tok = tok->next;
-			remove_token(tok->prev);
+			if (tok && tok->prev)
+				remove_token(tok->prev);
+			else
+				remove_token(tok);
 			cli = cli->next;
 		}
 	}
