@@ -6,11 +6,30 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:55 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/12 21:47:16 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:34:20 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	consume_fd(t_cli *cli)
+{
+	char	buffer[1024];
+	ssize_t	bytes;
+
+	if (!cli || cli->fd[0] < 1)
+		return ;
+	if (cli->type == BUILTIN)
+	{
+		while (1)
+		{
+			bytes = read(cli->fd[0], buffer, sizeof(buffer));
+			if (bytes <= 0)
+				break ;
+		}
+	}
+	close(cli->fd[0]);
+}
 
 static void	fork_command(t_cli *commands, pid_t *forked)
 {
@@ -21,7 +40,7 @@ static void	fork_command(t_cli *commands, pid_t *forked)
 			free(forked);
 			exit_program(1);
 		}
-		close(commands->fd[0]);
+		consume_fd(commands);
 	}
 	if (commands->fd[1])
 	{
