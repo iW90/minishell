@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:29:33 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 10:35:30 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:57:40 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,22 @@ static t_type	get_type(t_token *token)
 
 	if (is_builtin(token->str))
 		return (BUILTIN);
-	path = NULL;
-	envpath = search_var("PATH");
-	if (envpath)
+	if (!token->prev || token->prev->type == PIPE)
 	{
-		path = ft_strdup(envpath->value);
-		if (!path)
-			exit_program(OUT_OF_MEMORY);
+		path = NULL;
+		envpath = search_var("PATH");
+		if (envpath)
+		{
+			path = ft_strdup(envpath->value);
+			if (!path)
+				exit_program(OUT_OF_MEMORY);
+		}
+		execpath = get_exec_path(path, token->str);
+		if (path)
+			free(path);
+		if (execpath)
+			return (set_exec(token, execpath));
 	}
-	execpath = get_exec_path(path, token->str);
-	if (path)
-		free(path);
-	if (execpath)
-		return (set_exec(token, execpath));
 	return (ARGUMENT);
 }
 
