@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/14 19:49:52 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:10:59 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
+# endif
+
+# ifndef FD_MAX
+#  define FD_MAX 1024
 # endif
 
 /*	REDIRECTORS
