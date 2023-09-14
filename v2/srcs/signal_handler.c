@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 14:49:23 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 21:52:44 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:55:16 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	set_signals(int mode)
 	{
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGPIPE, SIG_DFL);
 	}
 	if (mode == INACTIVE)
 	{
@@ -76,6 +77,7 @@ void	set_signals(int mode)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		signal(SIGPIPE, SIG_DFL);
 	}
 	if (mode == HEREDOC)
 		signal(SIGINT, here_docking);
