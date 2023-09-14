@@ -6,7 +6,7 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/09/13 22:14:11 by maalexan         ###   ########.fr        #
+#    Updated: 2023/09/13 22:33:42 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ FUN			:=	main.c \
 				executor_fd.c \
 				executor_fork.c \
 				executor_heredoc.c \
-				executor_list.c \
 				executor.c \
 				input_utils.c \
 				input_validator.c \

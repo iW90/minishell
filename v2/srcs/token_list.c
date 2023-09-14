@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:49:59 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 15:10:12 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/13 22:37:02 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*remove_token(t_token *node)
 		get_control()->tokens = NULL;
 	return (next);
 }
-
+/*
 static t_token	*get_token_end(t_token *token)
 {
 	t_token	*end;
@@ -91,3 +91,4 @@ t_token	*discard_tokens(t_token *token)
 	}
 	return (end);
 }
+*/
