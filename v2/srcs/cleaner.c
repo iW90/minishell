@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 10:25:37 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/12 20:21:41 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:11:12 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	clear_cli(t_cli *cli)
 void	exit_program(int code)
 {
 	t_ctrl	*control;
+	int		i;
 
 	control = get_control();
 	if (control->input)
@@ -78,5 +79,8 @@ void	exit_program(int code)
 	rl_clear_history();
 	if (code)
 		control->status = code;
+	i = -1;
+	while (++i < FD_MAX)
+		close(i);
 	exit((unsigned char)control->status);
 }

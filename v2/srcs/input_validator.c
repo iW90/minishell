@@ -3,27 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   input_validator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:38:31 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 11:47:38 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:48:09 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	print_error(char *msg, char *refstr, char refchar)
+static int	validate_start_pipe(char *input)
 {
-	ft_putstr_fd("msh: ", STDERR_FILENO);
-	ft_putstr_fd(msg, STDERR_FILENO);
-	if (refstr)
-		ft_putstr_fd(refstr, STDERR_FILENO);
-	if (refchar)
-		ft_putchar_fd(refchar, STDERR_FILENO);
-	if (refstr || refchar)
-		ft_putstr_fd("'", STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	return (1);
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (input[j] && input[j + 1])
+		j++;
+	while (ft_isblank(input[i]))
+		i++;
+	while (ft_isblank(input[j]))
+		j--;
+	if (!is_pipe(input[i]) && !is_pipe(input[j]))
+		return (0);
+	return (print_error("syntax error near unexpected token `", \
+			NULL, '|'));
 }
 
 static int	check_unclosed_quotes(char *input, int *i)
@@ -77,6 +82,8 @@ int	validate_input(char *input)
 
 	if (!input)
 		return (0);
+	if (validate_start_pipe(input))
+		return (-1);
 	i = -1;
 	while (input[++i])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 22:36:36 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:10:59 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@
 
 # ifndef PATH_MAX
 #  define PATH_MAX 4096
+# endif
+
+# ifndef FD_MAX
+#  define FD_MAX 1024
 # endif
 
 /*	REDIRECTORS
@@ -134,6 +138,7 @@ int		validate_input(char *input);
 int		is_bracket(char c);
 int		is_pipe(char c);
 void	get_quote(char *input, int *i);
+int		print_error(char *msg, char *refstr, char refchar);
 
 int		is_var(char var);
 int		is_builtin(char *cmd);
@@ -173,24 +178,14 @@ void	new_var(t_env *env, char *args);
 t_env	*validate_if_var_exist(t_env *list, char *arg);
 
 int		executor_constructor(t_token *tok);
-//int		assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs);
 int		set_cli(t_token *tok, t_cli *cli);
 int		get_heredoc(t_token *tok, t_cli *cli);
 
 t_token	*remove_token(t_token *node);
 
-//t_cli	*add_cli(t_here *head);
-//t_cli	*remove_cli(t_cli *cli);
-//t_token	*discard_tokens(t_token *token);
-//t_here	*add_heredoc(t_here *head);
-//t_here	*get_heredocs(t_token *tok);
-//int		free_heredocs(t_here *doc, char closing);
-//void	remove_invalid_cli(t_cli *cli);
-
 int		run_commands(void);
 int		mother_forker(t_cli *commands, pid_t *forked, int amount);
 void	execute_a_command(t_cli *commands);
-//void	create_cli_list(t_token *tok, t_here *heredocs);
 void	set_fd(t_token *tok, t_cli *cli);
 
 //remove
