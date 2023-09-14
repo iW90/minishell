@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 14:49:23 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/26 18:10:15 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 21:52:44 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	non_interactive_mode(int sig)
 		ctrl->status = 130;
 	if (sig == SIGQUIT)
 		ctrl->status = 131;
+	if (sig == SIGPIPE)
+		exit_program(127 + sig);
 	ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
@@ -68,6 +70,7 @@ void	set_signals(int mode)
 	{
 		signal(SIGINT, non_interactive_mode);
 		signal(SIGQUIT, non_interactive_mode);
+		signal(SIGPIPE, non_interactive_mode);
 	}
 	if (mode == DEFAULT)
 	{
