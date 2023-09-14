@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/14 20:10:59 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:16:57 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,9 +187,5 @@ int		run_commands(void);
 int		mother_forker(t_cli *commands, pid_t *forked, int amount);
 void	execute_a_command(t_cli *commands);
 void	set_fd(t_token *tok, t_cli *cli);
-
-//remove
-void	print_cli(void);
-void	print_token(t_token *tokens);
 
 #endif
