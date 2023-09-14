@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 20:37:15 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 19:53:49 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 22:03:39 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	main(int argc, char **argv, char **env)
 		prompt_user("msh:> ");
 	exit_program(0);
 }
-
 
 /*
 Test   1: ✅ echo hello world 
@@ -278,5 +277,4 @@ Test 145: ✅ $?
 Test 146: ✅ README.md 
 
 SHELL SESSION_MANAGER COLORTERM HISTCONTROL XDG_MENU_PREFIX HISTSIZE HOSTNAME MAKE_TERMOUT SSH_AUTH_SOCK XMODIFIERS DESKTOP_SESSION EDITOR PWD LOGNAME XDG_SESSION_DESKTOP XDG_SESSION_TYPE SYSTEMD_EXEC_PID XAUTHORITY GDM_LANG HOME USERNAME LANG LS_COLORS XDG_CURRENT_DESKTOP VTE_VERSION WAYLAND_DISPLAY GNOME_TERMINAL_SCREEN MFLAGS MOZ_GMP_PATH GNOME_SETUP_DISPLAY XDG_SESSION_CLASS MAKEFLAGS TERM LESSOPEN USER MAKE_TERMERR GNOME_TERMINAL_SERVICE DISPLAY SHLVL MAKELEVEL ANDROID_SDK_ROOT QT_IM_MODULE XDG_RUNTIME_DIR DEBUGINFOD_URLS XDG_DATA_DIRS PATH GDMSESSION DBUS_SESSION_BUS_ADDRESS MAIL OLDPWD LD_PRELOAD _
-echo < invalidfile
 */

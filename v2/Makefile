@@ -6,7 +6,7 @@
 #    By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/22 11:13:39 by maalexan          #+#    #+#              #
-#    Updated: 2023/09/13 21:57:11 by maalexan         ###   ########.fr        #
+#    Updated: 2023/09/13 22:14:11 by maalexan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -91,6 +91,9 @@ $(OBJ_DIR)/%.o: $(BSRC_DIR)/%.c
 
 val: all
 	@valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes ./${NAME} || echo ""
+
+supp:
+	@printf "{\n        <Readline>\n        Memcheck:Leak\n        match-leak-kinds: reachable\n        ...\n        fun:readline\n        ...\n}\n{\n        <Readline>\n        Memcheck:Leak\n        match-leak-kinds: definite\n        fun:malloc\n        fun:xmalloc\n        fun:rl_add_undo\n        fun:rl_insert_text\n        fun:_rl_insert_char\n        fun:rl_insert\n        fun:_rl_dispatch_subseq\n        fun:readline_internal_char\n        fun:readline\n        ...\n}\n{\n        <AddHistory>\n        Memcheck:Leak\n        match-leak-kinds: reachable\n        fun:malloc\n        fun:xmalloc\n        fun:add_history\n        ...\n}\n" > readline.supp
 
 clean:
 	@$(MAKE) -C $(FTLIB_DIR) --silent clean

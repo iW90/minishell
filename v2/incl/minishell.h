@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/12 20:59:55 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/13 22:13:37 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ t_env	*validate_if_var_exist(t_env *list, char *arg);
 
 int		executor_constructor(t_token *tok);
 int		assign_each_fd(t_cli *cli, t_token *tok, t_here *heredocs);
-int	set_cli(t_token *tok, t_cli *cli);
-int	get_heredoc(t_token *tok, t_cli *cli);
+int		set_cli(t_token *tok, t_cli *cli);
+int		get_heredoc(t_token *tok, t_cli *cli);
 
 t_token	*remove_token(t_token *node);
 
