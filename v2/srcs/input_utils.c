@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 22:20:34 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/14 19:28:40 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:05:32 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int	print_error(char *msg, char *refstr, char refchar)
 	if (refstr || refchar)
 		ft_putstr_fd("'", STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
+	get_control()->status = 2;
 	return (1);
 }
