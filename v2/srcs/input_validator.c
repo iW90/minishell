@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 19:38:31 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/14 19:48:09 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 21:03:52 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static int	validate_start_pipe(char *input)
 	j = 0;
 	while (input[j] && input[j + 1])
 		j++;
-	while (ft_isblank(input[i]))
+	while (input[i] && ft_isblank(input[i]))
 		i++;
-	while (ft_isblank(input[j]))
+	while (j && ft_isblank(input[j]))
 		j--;
 	if (!is_pipe(input[i]) && !is_pipe(input[j]))
 		return (0);
