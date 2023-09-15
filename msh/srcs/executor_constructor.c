@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:40 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 11:06:04 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:51:38 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,16 @@ static int	count_cli(t_token *tok)
 	return (count);
 }
 
-static void	pipe_fd(int *next_fd0, int *curr_fd1, int *piped_fd)
+static void	pipe_fd(int *next_fd, int *curr_fd, int *piped_fd)
 {
-	if (*next_fd0 == 0)
-		*next_fd0 = piped_fd[0];
+	if (next_fd[0] == 0)
+		next_fd[0] = piped_fd[0];
 	else
 		close(piped_fd[0]);
-	*curr_fd1 = piped_fd[1];
+	if (curr_fd[1] == 0)
+		curr_fd[1] = piped_fd[1];
+	else
+		close(piped_fd[1]);
 }
 
 static int	set_pipes(t_cli *cli)
@@ -69,7 +72,7 @@ static int	set_pipes(t_cli *cli)
 	{
 		fd[0] = 0;
 		fd[1] = 0;
-		if (!cli->fd[1])
+		if (!next->fd[0] || !cli->fd[1])
 		{
 			if (pipe(fd) < 0)
 			{
@@ -77,7 +80,7 @@ static int	set_pipes(t_cli *cli)
 				return (-1);
 			}
 			else
-				pipe_fd(&next->fd[0], &cli->fd[1], fd);
+				pipe_fd(next->fd, cli->fd, fd);
 		}
 		cli = next;
 		next = next->next;

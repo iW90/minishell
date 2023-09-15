@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 09:31:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 10:04:14 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:39:51 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute_a_command(t_cli *commands)
 		call_builtin(commands);
 	else if (commands->type == EXEC)
 		call_execve(commands->args, get_control()->env);
-	else
+	else if (commands->args)
 	{
 		ft_putstr_fd(" command not found\n", STDERR_FILENO);
 		if (get_control()->status == 126)
