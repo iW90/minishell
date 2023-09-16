@@ -6,23 +6,11 @@
 /*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 13:50:16 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/16 13:37:14 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 14:17:31 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*get_var_value(char *value)
-{
-	char	*list_value;
-	t_env	*env_node;
-
-	list_value = NULL;
-	env_node = search_var(value);
-	if (env_node)
-		list_value = env_node->value;
-	return (list_value);
-}
 
 static int	count_list(t_env *list)
 {

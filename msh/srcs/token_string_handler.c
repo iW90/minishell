@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_str.c                                        :+:      :+:    :+:   */
+/*   token_string_handler.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:35:22 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 11:20:14 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 14:14:08 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static char	**get_str(char *input, int *i)
 	if (!control->pbox)
 		exit_program(OUT_OF_MEMORY);
 	null_pbox(control->pbox, 5);
+	if (input[*i] == '$' && is_quote(input[(*i) + 1]))
+		(*i)++;
 	if (quote == '"')
 		control->pbox[3] = set_quoted_token(input, i);
 	else
