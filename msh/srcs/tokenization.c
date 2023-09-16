@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 21:43:06 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 11:04:03 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/15 22:14:31 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,5 @@ int	tokenization(char *input)
 		link_token(current, control->tokens);
 	}
 	void_filterer(control->tokens);
-	parser();
 	return (0);
 }
