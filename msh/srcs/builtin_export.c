@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 21:02:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/07 20:34:49 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 10:54:58 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ static int	validate_var(char *arg)
 
 int	b_export(t_env *env, char **args)
 {
+	int	status;
+
+	status = 0;
 	if (!args && env)
 		return (export_without_args(env->next));
 	while (*args)
@@ -64,10 +67,10 @@ int	b_export(t_env *env, char **args)
 		if (validate_var(*args))
 		{
 			ft_putstr_fd("Minishell: not a valid identifier\n", STDERR_FILENO);
-			return (1);
+			status = 1;
 		}
 		new_var(env, *args);
 		args++;
 	}
-	return (0);
+	return (status);
 }
