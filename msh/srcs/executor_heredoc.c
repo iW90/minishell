@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/16 13:40:32 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 15:42:57 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	here_doc(char *delim, int *fd)
 		line = readline("> ");
 		if (!line || !ft_strncmp(delim, line, ft_strlen(delim) + 1))
 		{
+			if (!line)
+				write(1, "\n", 1);
 			free(line);
 			break ;
 		}
@@ -35,8 +37,6 @@ static void	here_doc(char *delim, int *fd)
 			break ;
 		}
 	}
-	close(fd[0]);
-	close(fd[1]);
 	exit_program(0);
 }
 
