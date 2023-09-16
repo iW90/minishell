@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_cli.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:33 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 11:43:28 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:41:27 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,29 @@ int	set_cli(t_token *tok, t_cli *cli)
 		}
 	}
 	return (1);
+}
+
+t_cli	*remove_cli(t_cli *cli)
+{
+	t_cli	*next;
+	t_cli	*temp;
+
+	if (!cli)
+		return (NULL);
+	temp = get_control()->commands;
+	next = cli->next;
+	while (temp && temp->next != cli)
+		temp = temp->next;
+	if (get_control()->commands == cli)
+		get_control()->commands = next;
+	else
+		temp->next = next;
+	if (cli->args)
+		clear_pbox(cli->args);
+	if (cli->fd[0] > 2)
+		close(cli->fd[0]);
+	if (cli->fd[1] > 2)
+		close(cli->fd[1]);
+	free(cli);
+	return (next);
 }

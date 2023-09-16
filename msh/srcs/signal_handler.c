@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/16 14:49:23 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/13 22:01:00 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:47:01 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*	MODO INTERATIVO
-** rl_on_new_line: Move o cursor para uma nova linha
-** rl_replace_line: Limpa a linha de entrada atual
-** rl_redisplay: Reexibe o prompt
-*/
 static void	sig_handler(int sig)
 {
 	t_ctrl	*ctrl;
@@ -31,14 +26,6 @@ static void	sig_handler(int sig)
 	rl_redisplay();
 }
 
-/*	MODO NÃO INTERATIVO
-** Usado quando o minishell está no modo não-interativo,
-** o que significa que não está aguardando a entrada do
-** usuário. Por exemplo, quando um comando está em execução
-** (ou seja, cat), o minishell não deve reagir a SIGINT e
-** SIGQUIT porque apenas o processo em execução (cat)
-** precisa reagir a esses sinais.
-*/
 static void	non_interactive_mode(int sig)
 {
 	int		code;

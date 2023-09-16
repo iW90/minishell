@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 21:07:00 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/08 12:32:09 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:30:58 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	is_str_digit(char *arg)
 	return (1);
 }
 
-int	print_error_exit(char *str, int ex)
+static int	print_error_exit(char *str, int ex)
 {
 	ft_putstr_fd(str, STDERR_FILENO);
 	if (ex)

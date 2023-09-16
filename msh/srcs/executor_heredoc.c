@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   executor_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:35 by maalexan          #+#    #+#             */
-/*   Updated: 2023/09/12 20:15:22 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:40:32 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-**	Pauses the program execution to 
-**	receive the user's input and writes
-**	it to an fd while it's open
-*/
 static void	here_doc(char *delim, int *fd)
 {
 	char	*line;

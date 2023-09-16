@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 09:34:50 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 18:46:35 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:35:13 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*	SETAR VARIÁVEL
-** Coloca um novo par chave-valor em um node.
-** Caso já exista algum valor alocado na key,
-** dará free neste valor antes de setar um novo.
-*/
 void	set_var(const char *src, t_env *node)
 {
 	int		len;
@@ -39,9 +34,6 @@ void	set_var(const char *src, t_env *node)
 	node->key = dst;
 }
 
-/*	CRIAR VARIÁVEL
-** Cria um novo node e coloca no final da lista.
-*/
 t_env	*add_var(t_env *prev, char *var)
 {
 	t_env	*newnode;
@@ -59,10 +51,6 @@ t_env	*add_var(t_env *prev, char *var)
 	return (newnode);
 }
 
-/*	BUSCAR VARIÁVEL
-** Procura uma variável na lista, e, caso não
-** encontre, retorna nulo.
-*/
 t_env	*search_var(char *var)
 {
 	t_env	*env;
@@ -79,10 +67,6 @@ t_env	*search_var(char *var)
 	return (NULL);
 }
 
-/*	REMOVER VARIÁVEL
-** Através do endereço do item anterior da lista,
-** é deletado o item desejado.
-*/
 t_env	*remove_var(char *str, t_env *list)
 {
 	t_env	*prev;
@@ -112,9 +96,6 @@ t_env	*remove_var(char *str, t_env *list)
 	return (list);
 }
 
-/*	PARSE ENV
-** Distribui cada uma das variáveis de env em uma lista linkada.
-*/
 t_env	*parse_env(char **env)
 {
 	t_env	*env_list;

@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:10:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/07 21:44:35 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 13:29:10 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* RETORNA O DIRETÓRIO ATUAL
-*/
-char	*get_pwd(char *prefix)
+static char	*get_pwd(char *prefix)
 {
 	char	current_path[PATH_MAX];
 	char	*pwd;
@@ -24,9 +22,7 @@ char	*get_pwd(char *prefix)
 	return (pwd);
 }
 
-/* ATUALIZA A VARIÁVEL COM O DIRETÓRIO INFORMADO
-*/
-void	set_pwd(char *pwd)
+static void	set_pwd(char *pwd)
 {
 	t_ctrl	*control;
 
@@ -36,11 +32,7 @@ void	set_pwd(char *pwd)
 	new_var(control->env, pwd);
 }
 
-/* MUDA O DIRETÓRIO PARA O CAMINHO INFORMADO.
-** Para atualizar o PWD e o OLDPWD é necessário pegar o diretório
-** antes e depois da mudança de diretório.
-*/
-int	change_directory(const char *path)
+static int	change_directory(const char *path)
 {
 	char	*pwd;
 	char	*old_pwd;
@@ -63,8 +55,6 @@ int	change_directory(const char *path)
 	}
 }
 
-/* CONCATENA HOME COM O RESTANTE DO CAMINHO
-*/
 static int	concat_tilde(char *path, char *home)
 {
 	char	*full_path;
