@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 21:02:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/16 14:28:28 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 17:35:08 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int	b_export(t_env *env, char **args)
 			ft_putstr_fd("msh: not a valid identifier\n", STDERR_FILENO);
 			status = 1;
 		}
-		new_var(env, *args);
+		else
+			new_var(env, *args);
 		args++;
 	}
 	return (status);
