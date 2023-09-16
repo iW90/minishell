@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/15 22:05:46 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 15:27:14 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	set_fd(t_token *tok, t_cli *cli)
 				treat_fd(tok, cli->fd, cli->hdoc);
 			tok = get_next_tok(tok);
 		}
-		if (tok)
+		if (tok && tok->prev)
 			tok = tok->next;
 	}
 }
