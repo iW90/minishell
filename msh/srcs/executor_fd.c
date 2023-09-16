@@ -6,20 +6,23 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:47 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/16 15:27:14 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 15:32:35 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token	*get_next_tok(t_token *tok)
+static t_token	*get_next_tok(t_token *tok, int *first)
 {
 	t_token	*temp;
 
 	if (!tok)
 		return (NULL);
 	if (!tok->prev && tok->next)
+	{
 		temp = tok->next->next;
+		*first = 1;
+	}
 	else
 		temp = tok->prev;
 	remove_token(tok->next);
@@ -90,6 +93,9 @@ static void	close_unused_fd(int *fd, int heredoc, t_type type)
 
 void	set_fd(t_token *tok, t_cli *cli)
 {
+	int	first;
+
+	first = 0;
 	while (cli)
 	{
 		while (tok && !tok->type)
@@ -101,9 +107,10 @@ void	set_fd(t_token *tok, t_cli *cli)
 			close_unused_fd(cli->fd, cli->hdoc, tok->type);
 			if (cli->fd[0] != -1 && cli->fd[1] != -1)
 				treat_fd(tok, cli->fd, cli->hdoc);
-			tok = get_next_tok(tok);
+			tok = get_next_tok(tok, &first);
 		}
-		if (tok && tok->prev)
+		if (tok && !first)
 			tok = tok->next;
+		first = 0;
 	}
 }
