@@ -6,26 +6,11 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 22:20:34 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/19 13:44:42 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:05:32 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*	PEGA O TRECHO ENTRE QUOTES
-** Enquanto a quote estiver aberta, o restante do código
-** não será interpretado, considerando como parte do
-** conteúdo quotado.
-** Sai do programa se não fechar o quote.
-*/
-void	get_quote(char *input, int *i)
-{
-	char	quote;
-
-	quote = input[(*i)++];
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-}
 
 int	is_bracket(char c)
 {
@@ -35,4 +20,19 @@ int	is_bracket(char c)
 int	is_pipe(char c)
 {
 	return (c == '|');
+}
+
+int	print_error(char *msg, char *refstr, char refchar)
+{
+	ft_putstr_fd("msh: ", STDERR_FILENO);
+	ft_putstr_fd(msg, STDERR_FILENO);
+	if (refstr)
+		ft_putstr_fd(refstr, STDERR_FILENO);
+	if (refchar)
+		ft_putchar_fd(refchar, STDERR_FILENO);
+	if (refstr || refchar)
+		ft_putstr_fd("'", STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	get_control()->status = 2;
+	return (1);
 }

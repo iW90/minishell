@@ -6,7 +6,7 @@
 #    By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/01 17:06:10 by inwagner          #+#    #+#              #
-#    Updated: 2023/08/12 20:56:33 by inwagner         ###   ########.fr        #
+#    Updated: 2023/09/08 11:59:31 by inwagner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ OSRC	:=	./objs/
 # MANDATORY
 FTS		:=	ft_abs.c \
 			ft_atoi.c \
+			ft_atol.c \
 			ft_bzero.c \
 			ft_calloc.c \
 			ft_isalnum.c \

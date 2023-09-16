@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 21:43:06 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/20 20:22:03 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:08:37 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,34 @@ static t_token	*get_token(char *input, int *i)
 	return (new);
 }
 
+int	void_filterer(t_token *tok)
+{
+	t_token	*temp;
+	int		returned;
+
+	returned = 0;
+	while (tok)
+	{
+		if (tok->str && tok->str[0] == '\0')
+		{
+			if (!tok->prev && tok->next)
+				temp = tok->next->next;
+			else
+				temp = tok->prev;
+			remove_token(tok);
+			tok = temp;
+			while (temp && temp->prev)
+				temp = temp->prev;
+			if (temp)
+				get_control()->tokens = temp;
+			returned = 1;
+		}
+		else if (tok)
+			tok = tok->next;
+	}
+	return (returned);
+}
+
 int	tokenization(char *input)
 {
 	t_ctrl	*control;
@@ -51,6 +79,5 @@ int	tokenization(char *input)
 		current = get_token(input, &i);
 		link_token(current, control->tokens);
 	}
-	parser();
 	return (0);
 }

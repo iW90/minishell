@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_helper.c                                     :+:      :+:    :+:   */
+/*   token_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 22:34:31 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/19 16:16:59 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/07 15:27:01 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	null_pbox(char **pbox, int size)
 
 	i = -1;
 	while (++i < size)
-			pbox[i] = NULL;
+		pbox[i] = NULL;
 }
 
 char	*copy_str(char *input, int start, int len)
@@ -52,4 +52,13 @@ char	*copy_str(char *input, int start, int len)
 		exit_program(OUT_OF_MEMORY);
 	ft_strlcpy(str, &input[start], len);
 	return (str);
+}
+
+void	get_quote(char *input, int *i)
+{
+	char	quote;
+
+	quote = input[(*i)++];
+	while (input[*i] && input[*i] != quote)
+		(*i)++;
 }

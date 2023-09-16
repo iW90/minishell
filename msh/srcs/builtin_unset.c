@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 19:09:57 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 10:55:05 by inwagner         ###   ########.fr       */
+/*   Created: 2023/07/08 20:35:40 by inwagner          #+#    #+#             */
+/*   Updated: 2023/08/21 20:42:24 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *src)
+int	b_unset(char **args, t_env *env)
 {
-	size_t	len;
-
-	if (!src)
+	if (!args)
 		return (0);
-	len = 0;
-	while (src[len])
-		len++;
-	return (len);
+	while (*args)
+	{
+		remove_var(*args, env);
+		args++;
+	}
+	return (0);
 }

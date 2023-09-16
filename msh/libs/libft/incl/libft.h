@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:03:22 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/12 16:09:00 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/08 11:59:11 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		ft_strcmp(const char *str1, const char *str2);
 size_t	ft_abs(int n);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
+long	ft_atol(const char *str);
 
 // Memory
 void	ft_bzero(void *s, size_t n);

@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 18:29:33 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/21 20:10:12 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:57:40 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,19 @@ static int	is_cmd(t_token *token)
 {
 	if (!token)
 		return (0);
-	return (token->type == BUILTIN || token->type == EXEC || token->type == ARGUMENT);
+	return (token->type == BUILTIN || \
+			token->type == EXEC || \
+			token->type == ARGUMENT);
 }
 
-static enum e_type	set_exec(t_token *token, char *execpath)
+static t_type	set_exec(t_token *token, char *execpath)
 {
 	free(token->str);
 	token->str = execpath;
 	return (EXEC);
 }
 
-static enum e_type	get_type(t_token *token)
+static t_type	get_type(t_token *token)
 {
 	char	*execpath;
 	char	*path;
@@ -34,19 +36,22 @@ static enum e_type	get_type(t_token *token)
 
 	if (is_builtin(token->str))
 		return (BUILTIN);
-	path = NULL;
-	envpath = search_var("PATH");
-	if (envpath)
+	if (!token->prev || token->prev->type == PIPE)
 	{
-		path = ft_strdup(envpath->value);
-		if (!path)
-			exit_program(OUT_OF_MEMORY);
+		path = NULL;
+		envpath = search_var("PATH");
+		if (envpath)
+		{
+			path = ft_strdup(envpath->value);
+			if (!path)
+				exit_program(OUT_OF_MEMORY);
+		}
+		execpath = get_exec_path(path, token->str);
+		if (path)
+			free(path);
+		if (execpath)
+			return (set_exec(token, execpath));
 	}
-	execpath = get_exec_path(path, token->str);
-	if (path)
-		free(path);
-	if (execpath)
-		return (set_exec(token, execpath));
 	return (ARGUMENT);
 }
 

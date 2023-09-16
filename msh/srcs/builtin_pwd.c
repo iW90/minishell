@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: inwagner <inwagner@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/08 19:09:57 by inwagner          #+#    #+#             */
-/*   Updated: 2023/08/27 10:55:05 by inwagner         ###   ########.fr       */
+/*   Created: 2023/07/02 18:12:40 by inwagner          #+#    #+#             */
+/*   Updated: 2023/07/17 19:33:57 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *src)
+int	b_pwd(void)
 {
-	size_t	len;
+	char	current_path[PATH_MAX];
 
-	if (!src)
-		return (0);
-	len = 0;
-	while (src[len])
-		len++;
-	return (len);
+	if (!getcwd(current_path, sizeof(current_path)))
+		exit_program(-1);
+	ft_putstr_fd(current_path, STDOUT_FILENO);
+	ft_putstr_fd("\n", STDOUT_FILENO);
+	return (0);
 }
