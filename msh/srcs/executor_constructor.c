@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 11:33:40 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/15 22:14:44 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:09:02 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int	executor_constructor(t_token *tok)
 	if (!get_heredoc(tok, ctrl->commands))
 		return (0);
 	set_fd(ctrl->tokens, ctrl->commands);
+	void_filterer(ctrl->tokens);
 	parser();
 	set_cli(ctrl->tokens, ctrl->commands);
 	if (!ctrl->commands || set_pipes(ctrl->commands) < 0)

@@ -6,7 +6,7 @@
 /*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 21:43:06 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/15 22:14:31 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:08:37 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_token	*get_token(char *input, int *i)
 	return (new);
 }
 
-static int	void_filterer(t_token *tok)
+int	void_filterer(t_token *tok)
 {
 	t_token	*temp;
 	int		returned;
@@ -79,6 +79,5 @@ int	tokenization(char *input)
 		current = get_token(input, &i);
 		link_token(current, control->tokens);
 	}
-	void_filterer(control->tokens);
 	return (0);
 }

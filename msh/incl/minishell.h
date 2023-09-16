@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/16 15:47:04 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 18:11:46 by maalexan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	prompt_user(const char *prompt);
 int		tokenization(char *input);
 char	*expand_token(char **str, int *j);
 int		parser(void);
+int		void_filterer(t_token *tok);
 
 void	call_builtin(t_cli *cli);
 int		b_cd(char **path);
