@@ -38,3 +38,30 @@ O **minishell**, como o nome já sugere, é um programa que reproduz alguns comp
 - `env` (sem opções nem argunentos): Exibe todas as variáveis de ambiente do sistema e seu valor.
 - `exit` (sem opções): Encerra a sessão do shell ou um script em execução.
 
+## Compilação e Execução 
+
+Para compilar, entre na pasta `msh` e execute o comando:
+
+```
+make
+```
+
+### Execução
+
+Basta executar o arquivo minishell que foi gerado após a compilação:
+
+```
+./minishell
+```
+
+O prompt aberto que foi utilizado será sobreposto pelo minishell e nele é possível utilizar as implementações mencionadas acima, além de quaisquer executáveis que estejam disponíveis através dos caminhos definidos na variável de ambiente **PATH** de seu sistema operacional.
+
+Para encerrar, você pode pressionar o comando <kbd>Ctrl</kbd> + <kbd>D</kbd> ou usar o builtin `exit`.
+
+## Visualização
+
+<div align="center">
+
+![minishell](./info/msh.png)
+
+</div>
