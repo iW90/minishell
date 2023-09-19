@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maalexan <maalexan@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 21:09:26 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/16 18:11:46 by maalexan         ###   ########.fr       */
+/*   Updated: 2023/09/16 19:51:49 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void	get_quote(char *input, int *i);
 int		validate_input(char *input);
 void	quick_sort(char **strings, int low, int high);
 int		print_error(char *msg, char *refstr, char refchar);
+int		print_builtin_errors(char *str, int error);
 
 char	*set_pipe_token(char *input, int *i, t_token *token);
 char	*set_redirector_token(char *input, int *i, t_token *token);

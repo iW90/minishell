@@ -6,7 +6,7 @@
 /*   By: inwagner <inwagner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 21:10:09 by inwagner          #+#    #+#             */
-/*   Updated: 2023/09/16 13:29:10 by inwagner         ###   ########.fr       */
+/*   Updated: 2023/09/16 19:53:08 by inwagner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,20 @@ int	b_cd(char **path)
 	if (!path || !*path)
 	{
 		if (!home)
-			return (ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO), 1);
+			return (print_builtin_errors("cd: HOME not set\n", 1));
 		return (change_directory(home->value));
 	}
 	else if (path[1])
-		return (ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO), 1);
+		return (print_builtin_errors("cd: too many arguments\n", 1));
 	else if (!ft_strncmp(*path, "~", 1))
 	{
 		if (!home)
-			return (ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO), 1);
+			return (print_builtin_errors("cd: HOME not set\n", 1));
 		if (!ft_strncmp(*path, "~", 2) || !ft_strncmp(*path, "~/", 3))
 			return (change_directory(home->value));
 		if (!ft_strncmp(*path, "~/", 2))
 			return (concat_tilde(*path, home->value));
-		return (ft_putstr_fd("cd: cannot change directory\n", STDERR_FILENO), 1);
+		return (print_builtin_errors("cd: cannot change directory\n", 1));
 	}
 	else
 		return (change_directory(*path));
