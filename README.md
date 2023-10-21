@@ -5,7 +5,7 @@
 
 O **minishell**, como o nome já sugere, é um programa que reproduz alguns comportamentos do terminal de comandos `shell`. O programa é desenvolvido em **C** e permite que o usuário interaja com o computador por meios de comandos de texto. O shell também oferece recursos como redirecionamento de entrada e saída, criação de scripts para automatização tarefas, controle de processos, entre outros, enquanto o **minishell** oferece apenas algumas dessas funcionalidades.
 
-## Implementações <img src="https://img.shields.io/badge/GRADE-101%2F100-green" align="right">
+## Implementações <img src="https://img.shields.io/badge/GRADE-101%2F100-success?logo=42&logoColor=fff" align="right"/>
 
 - Prompt display.
 - Histórico de comandos.
